@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models\Product;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Order\Orders;
+use App\Models\Product\Thumnail;
+use App\Models\Product\Specifications;
+
+class Product extends Model
+{
+    use HasFactory;
+    protected $table = 'product';
+    public $timestamps = false;
+    protected $fillable = [
+        'id',
+        'name',
+        'is_stock',
+        'short_description',
+        'description',
+        'quantity_available',
+        'price',
+        'hot',
+        'sale_price',
+        'view',
+        'image',
+        'time_up',
+    ];
+
+    public function orders() {
+        return $this->hasMany(Orders::class, 'product_id');
+    }
+    public function specification() {
+        return $this->hasMany(Specifications::class, 'product_id');
+    }
+    public function thumnail() {
+        return $this->hasMany(Thumnail::class, 'product_id');
+    }
+}
