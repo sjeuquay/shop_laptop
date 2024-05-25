@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('id')->autoIncrement();
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('total_price');
+            $table->integer('total_price')->nullable();
             $table->dateTime('date_created')->useCurrent();
         });
     }

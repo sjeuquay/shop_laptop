@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('date_join')->useCurrent();
             $table->timestamp('date_update')->useCurrent();
             $table->boolean('role')->default('1');
+            $table->boolean('is_active')->default('1');
         });
 
         // Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -44,10 +45,10 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    // public function down(): void
-    // {
-    //     Schema::dropIfExists('users');
-    //     Schema::dropIfExists('password_reset_tokens');
-    //     Schema::dropIfExists('sessions');
-    // }
+    public function down(): void
+    {
+        Schema::dropIfExists('users');
+        // Schema::dropIfExists('password_reset_tokens');
+        // Schema::dropIfExists('sessions');
+    }
 };

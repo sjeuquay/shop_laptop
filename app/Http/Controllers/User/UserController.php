@@ -78,6 +78,7 @@ class UserController extends Controller
         } else {
             if (Auth::attempt(['user_name' => $request->user_name, 'password' => $request->password])) {
                 if (Auth::user()->role_id == '1') {
+                    
                     return redirect()->route('home');
                 } else {
                     // admin dashboard

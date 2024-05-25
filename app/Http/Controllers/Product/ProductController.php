@@ -34,17 +34,6 @@ class ProductController extends Controller
         return view('Site.home', compact('products', 'productsView', 'productsHot', 'productsDemo', 'thumbnail'));
     }
 
-    // public function demo(string $id = null)
-    // {
-    //     try {
-    //         $productsDemo = Product::findOrFail($id);
-    //         $thumbnail = Thumnail::where('product_id', $productsDemo->id)->get();
-    //     } catch (\Throwable $error) {
-    //     }
-    //     dd($thumbnail);
-    //     return redirect()->route('home')->with(['productsDemo' => $productsDemo, 'thumbnail' => $thumbnail]);
-    // }
-
     public function shop(string $id = null)
     {
         try {
@@ -107,4 +96,6 @@ class ProductController extends Controller
         }
         return view('Site.Product.search', compact('search', 'keyword'));
     }
+
+    
 }

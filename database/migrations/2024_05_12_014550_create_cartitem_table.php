@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integer('id')->autoIncrement();
             $table->integer('product_id');
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
-            $table->integer('card_id');
-            $table->foreign('card_id')->references('id')->on('cart')->onDelete('cascade');
+            $table->integer('cart_id');
+            $table->foreign('cart_id')->references('id')->on('cart')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('price');
             $table->integer('total_price');

@@ -12,7 +12,7 @@
                             <li><a href="{{ route('home') }}">Trang chủ<i class="bi bi-chevron-right"></i></a></li>
                             <li class="active"><a href="{{ route('shop') }}">cửa hàng
                                     @if (count($similar))
-                                        {{ $similar[0]->name }}
+                                        {{ $similar[0]->category->name }}
                                     @endif
                                 </a></li>
                         </ul>

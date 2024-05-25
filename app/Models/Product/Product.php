@@ -2,6 +2,7 @@
 
 namespace App\Models\Product;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order\Orders;
@@ -33,6 +34,9 @@ class Product extends Model
     }
     public function specification() {
         return $this->hasMany(Specifications::class, 'product_id');
+    }
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
     public function thumnail() {
         return $this->hasMany(Thumnail::class, 'product_id');

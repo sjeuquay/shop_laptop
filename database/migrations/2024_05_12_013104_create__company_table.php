@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ProductThumnail', function (Blueprint $table) {
+        Schema::create('company', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->integer('product_id');
-            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
-            $table->string('img_thumbnail', 200);
+            $table->string('name', 100);
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ProductThumnail');
+        Schema::dropIfExists('company');
     }
 };
