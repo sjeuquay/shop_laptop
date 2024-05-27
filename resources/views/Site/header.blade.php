@@ -27,7 +27,7 @@
                                  <li class="dropdown overlay-account">
                                      <i class="bi bi-person"></i>
                                      <a href="#" class="dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                                         aria-expanded="false">{{auth()->user()->name}}</a>
+                                         aria-expanded="false">{{ auth()->user()->name }}</a>
                                      <ul class="dropdown-menu" id="myDropdown">
                                          <li><a style="background-color: transparent" class="dropdown-item"
                                                  href="#">Thông tin tài khoản</a></li>
@@ -36,7 +36,7 @@
                                          <li><a style="background-color: transparent" class="dropdown-item"
                                                  href="#">Yêu thích</a></li>
                                          <li><a style="background-color: transparent" class="dropdown-item"
-                                                 href="{{route('logout')}}">Đăng xuất</a></li>
+                                                 href="{{ route('logout') }}">Đăng xuất</a></li>
                                      </ul>
                                  </li>
                              @else
@@ -103,37 +103,37 @@
                          </div>
                          <div class="sinlge-bar shopping">
                              <a href="{{ route('cart') }}" class="single-icon"><i class="bi bi-bag"></i> <span
-                                     class="total-count">2</span></a>
+                                     class="total-count">
+                                     {{ $amount }}
+                                 </span></a>
                              <!-- Shopping Item -->
                              <div class="shopping-item d-block" style="display: block !important;">
                                  <div class="dropdown-cart-header">
-                                     <span>2 sản phẩm</span>
+                                     <span>{{ $amountProduct }} sản phẩm</span>
                                      <a href="{{ route('cart') }}">Giỏ hàng</a>
                                  </div>
                                  <ul class="shopping-list">
-                                     <li>
-                                         <a href="#" class="remove" title="Remove this item"><i
-                                                 class="bi bi-trash3"></i></a>
-                                         <a class="cart-img" href="#"><img
-                                                 src="https://via.placeholder.com/70x70" alt="#"></a>
-                                         <h4><a href="#">Woman Ring</a></h4>
-                                         <p class="quantity">1x - <span class="amount">$99.00</span></p>
-                                     </li>
-                                     <li>
-                                         <a href="#" class="remove" title="Remove this item"><i
-                                                 class="bi bi-trash3"></i></a>
-                                         <a class="cart-img" href="#"><img
-                                                 src="https://via.placeholder.com/70x70" alt="#"></a>
-                                         <h4><a href="#">Woman Necklace</a></h4>
-                                         <p class="quantity">1x - <span class="amount">$35.00</span></p>
-                                     </li>
+                                     @if (!empty($cart))
+                                         @foreach ($cart->cartItem as $cartItem)
+                                             <li>
+                                                 <a href="#" class="remove" title="Remove this item"><i
+                                                         class="bi bi-trash3"></i></a>
+                                                 <a class="cart-img" href="#"><img
+                                                         src="{{asset('images/product/'.$cartItem->product->image)}}" alt="#"></a>
+                                                 <h4>
+                                                    <a href="#" class="text-truncate text-overflow_truncate">{{$cartItem->product->name}}</a>
+                                                </h4>
+                                                 <p class="quantity">{{$cartItem->quantity}}x - <span class="amount">{{ number_format($cartItem->price, 0, ',', '.') }} ₫</span></p>
+                                             </li>
+                                         @endforeach
+                                     @endif
                                  </ul>
                                  <div class="bottom">
                                      <div class="total">
-                                         <span>Total</span>
-                                         <span class="total-amount">$134.00</span>
+                                         <span>Tổng tiền</span>
+                                         <span class="total-amount">{{number_format($total, 0, ',', '.')}}₫</span>
                                      </div>
-                                     <a href="checkout.html" class="btn animate">Checkout</a>
+                                     <a href="checkout.html" class="btn animate">Thanh toán</a>
                                  </div>
                              </div>
                              <!--/ End Shopping Item -->
@@ -155,8 +155,10 @@
                                  <div class="navbar-collapse">
                                      <div class="nav-inner" style="width: 100% !important;">
                                          <ul class="nav main-menu menu navbar-nav justify-content-center">
-                                             <li class="{{ request()->is('/') ? 'active' : '' }}"><a href="{{ route('home') }}">Trang chủ</a></li>
-                                             <li class="{{ request()->is('shop*') ? 'active' : '' }}"><a href="{{ route('shop') }}">Cửa hàng <i
+                                             <li class="{{ request()->is('/') ? 'active' : '' }}"><a
+                                                     href="{{ route('home') }}">Trang chủ</a></li>
+                                             <li class="{{ request()->is('shop*') ? 'active' : '' }}"><a
+                                                     href="{{ route('shop') }}">Cửa hàng <i
                                                          class="bi bi-chevron-down"></i></a>
                                                  <ul class="dropdown">
                                                      @if ($category)
@@ -168,10 +170,13 @@
                                                      @endif
                                                  </ul>
                                              </li>
-                                             <li class="{{ request()->is('about') ? 'active' : '' }}"><a href="#">Giới thiệu</a></li>
-                                             <li class="{{ request()->is('posts') ? 'active' : '' }}"><a href="#">Bài viết</a>
+                                             <li class="{{ request()->is('about') ? 'active' : '' }}"><a
+                                                     href="#">Giới thiệu</a></li>
+                                             <li class="{{ request()->is('posts') ? 'active' : '' }}"><a
+                                                     href="#">Bài viết</a>
                                              </li>
-                                             <li class="{{ request()->is('contact') ? 'active' : '' }}"><a href="contact.html">Liên hệ</a></li>
+                                             <li class="{{ request()->is('contact') ? 'active' : '' }}"><a
+                                                     href="contact.html">Liên hệ</a></li>
                                          </ul>
                                      </div>
                                  </div>

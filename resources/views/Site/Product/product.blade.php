@@ -5,8 +5,8 @@
 
     <!-- Main Style CSS -->
     @push('product')
-    <link rel="stylesheet" href="{{ asset('css/Site/style1.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/Site/plugins.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/Site/style1.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/Site/plugins.css') }}">
     @endpush
 
     <div class="py-5">
@@ -16,8 +16,8 @@
                 <div class="row">
                     <div class="col-lg-5 col-md-5">
                         <div class="product-details-tab">
-                            <div id="img-1" class="zoomWrapper single-zoom">
-                                <a href="#">
+                            <div id="img-1" class="zoom Wrapper single-zoom">
+                                <a href="#" class="d-flex justify-content-center" style="">
                                     <img id="zoom1" src="{{ asset('images/product/' . $product->image) }}"
                                         data-zoom-image="{{ asset('images/product/' . $product->image) }}"
                                         class="img-main_product">
@@ -55,7 +55,7 @@
                             <form action="{{ route('addcart', ['id' => $product->id]) }}" method="POST">
                                 @csrf
                                 <h1 class="text-uppercase"
-                                    style="color: #000;opacity:1;font-weight:600;letter-spacing:3px;font-size:26px;">
+                                    style="color: #000;opacity:1;font-weight:600;letter-spacing:3px;font-size:26px;line-height:30px;">
                                     {{ $product->name }}</h1>
                                 <div class=" product_ratting">
                                     <ul class="px-0">
@@ -69,9 +69,9 @@
                                 </div>
                                 <div class="product_price">
                                     <span class="current_price"
-                                        style="font-size: 30px;">{{ number_format($product->sale_price) }} VND</span>
+                                        style="font-size: 30px;">{{ number_format($product->sale_price) }} ₫</span>
                                     <span class="current_price" style="font-size: 20px">
-                                        <del style="opacity:0.5;">{{ number_format($product->price) }} VND</del>
+                                        <del style="opacity:0.5;">{{ number_format($product->price) }} ₫</del>
                                     </span>
                                 </div>
                                 <div class="product_desc">
@@ -82,9 +82,15 @@
                                     <h3>Bảo hành 1 năm kể từ ngày mua</h3>
                                 </div>
                                 <div class="product_variant quantity">
-                                    <button class="button" type="submit" name="action" value="buy_now">Mua ngay</button>
-                                    <button id="addToCartButton" class="button addToCartButton" type="submit">Thêm vào giỏ
-                                        hàng</button>
+                                    {{-- <button id="buyNowButton" class="button" type="submit" name="action" value="buy_now">Mua ngay</button> --}}
+                                    @if (auth()->check())
+                                        <button class="button addToCartButton" type="submit">Thêm vào giỏ
+                                            hàng</button>
+                                    @else
+                                        <button id="addToCartButton" class="button addToCartButton" type="button">Thêm vào
+                                            giỏ
+                                            hàng</button>
+                                    @endif
                                 </div>
                             </form>
                         </div>
@@ -216,9 +222,6 @@
                                             </a>
                                             <div class="button-head">
                                                 <div class="product-action">
-                                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
-                                                        href="{{ route('product', ['id' => $p->id]) }}"><i
-                                                            class="bi bi-eye"></i><span>Chi tiết</span></a>
                                                     <a title="Wishlist" href="#"><i
                                                             class="bi bi-heart"></i><span>Yêu
                                                             thích</span></a>
@@ -232,9 +235,9 @@
                                         <div class="product-content">
                                             <h3><a>{{ $p->name }}</a></h3>
                                             <div class="product-price">
-                                                <span>{{ number_format($p->sale_price) }} VND</span>
+                                                <span>{{ number_format($p->sale_price) }} ₫</span>
                                                 <del class="" style="opacity:0.5;">{{ number_format($p->price) }}
-                                                    VND</del>
+                                                    ₫</del>
                                             </div>
                                         </div>
                                     </div>
@@ -247,6 +250,31 @@
         </div>
         <!-- End Most Popular Area -->
     </div>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content h-100 border-0">
+            <span id="closeModal" class="close">&times;</span>
+            <div class="h-100 d-flex flex-column align-items-center justify-content-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#ff6a28"
+                    class="bi bi-handbag" viewBox="0 0 16 16">
+                    <path
+                        d="M8 1a2 2 0 0 1 2 2v2H6V3a2 2 0 0 1 2-2m3 4V3a3 3 0 1 0-6 0v2H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5zm-1 1v1.5a.5.5 0 0 0 1 0V6h1.639a.5.5 0 0 1 .494.426l1.028 6.851A1.5 1.5 0 0 1 12.678 15H3.322a1.5 1.5 0 0 1-1.483-1.723l1.028-6.851A.5.5 0 0 1 3.36 6H5v1.5a.5.5 0 1 0 1 0V6z" />
+                </svg>
+                <p class="py-4">Vui lòng đăng nhập để mua hàng và thanh toán dễ dàng hơn</p>
+                <div class="d-flex">
+                    <div class="mx-2">
+                        <a href="{{ route('register') }}" class="btn btn-outline-dark btn-register_product">Đăng Ký</a>
+                    </div>
+                    <div class="mx-2">
+                        <a href="{{ route('login') }}" class="btn text-white btn-dark btn-login_product">Đăng Nhập</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="modalOverlay" class="overlay"></div>
 
     <link rel="stylesheet" href="{{ asset('js/Site/plugins.js') }}">
     <link rel="stylesheet" href="{{ asset('js/Site/main.js') }}">
@@ -265,25 +293,33 @@
                 });
             });
         });
-    </script>
-    <script>
+
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Chọn nút "Thêm vào giỏ hàng"
             var addToCartButton = document.getElementById('addToCartButton');
+            var modal = document.getElementById('cartModal');
+            var overlay = document.getElementById('modalOverlay');
+            var closeModal = document.getElementById('closeModal');
 
-            // Bắt sự kiện click trên nút "Thêm vào giỏ hàng"
+            // Show modal and overlay when "Thêm vào giỏ hàng" button is clicked
             addToCartButton.addEventListener('click', function(event) {
-                // Ngăn chặn hành vi mặc định của sự kiện click
-                event.preventDefault();
+                event.preventDefault(); // Prevent the default action
+                modal.classList.add('show');
+                overlay.style.display = 'block';
+            });
 
-                // Thực hiện xử lý của bạn, chẳng hạn thêm sản phẩm vào giỏ hàng
+            // Hide modal and overlay when the close button is clicked
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('show');
+                overlay.style.display = 'none';
+            });
 
-                // Sau khi xử lý, chuyển hướng người dùng đến trang sản phẩm hoặc trang mục tiêu khác
-                window.location.href =
-                "{{ route('product', ['id' => $product->id]) }}"; // Điều này giả định rằng bạn muốn chuyển hướng người dùng đến trang sản phẩm sau khi họ thêm vào giỏ hàng
+            // Hide modal and overlay when the overlay is clicked
+            overlay.addEventListener('click', function() {
+                modal.classList.remove('show');
+                overlay.style.display = 'none';
             });
         });
     </script>
-
     <!-- Main JS -->
 @endsection

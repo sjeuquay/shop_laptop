@@ -35,6 +35,9 @@ Version:1.0
 20. 404 Error CSS
 21. Footer CSS
 ========================================*/
+ol, ul {
+	padding-left: 0;
+}
 .color-plate {
 	position: fixed;
 	display: block;
@@ -4976,4 +4979,15 @@ Version:1.0
 	background-color: transparent;
 	right: 0;
 	bottom: -10px;
+}
+
+.text-overflow_truncate {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-height: 16px; /* Adjust as needed */
+    max-height: 32px; /* Adjust based on line-height * number of lines */
+    -webkit-line-clamp: 2; /* Number of lines to show */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal; /* Ensure text wraps */
 }

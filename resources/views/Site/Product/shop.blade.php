@@ -110,9 +110,6 @@
                                             </a>
                                             <div class="button-head">
                                                 <div class="product-action">
-                                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
-                                                        onclick="openHomeModal({{ $p->id }})"><i
-                                                            class="bi bi-eye"></i><span>Chi tiết</span></a>
                                                     <a title="Wishlist" href="#"><i class="bi bi-heart"></i><span>Yêu
                                                             thích</span></a>
                                                 </div>
@@ -125,9 +122,8 @@
                                         <div class="product-content">
                                             <h3><a>{{ $p->name }}</a></h3>
                                             <div class="product-price">
-                                                <span>{{ number_format($p->sale_price) }} VND</span>
-                                                <del class="" style="opacity:0.5;">{{ number_format($p->price) }}
-                                                    VND</del>
+                                                <span>{{ number_format($p->sale_price) }} ₫</span>
+                                                <del class="" style="opacity:0.5;">{{ number_format($p->price, 0, ',', '.') }} ₫</del>
                                             </div>
                                         </div>
                                     </div>
@@ -171,9 +167,6 @@
                                             </a>
                                             <div class="button-head">
                                                 <div class="product-action">
-                                                    <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
-                                                        onclick="openHomeModal({{ $p->id }})"><i
-                                                            class="bi bi-eye"></i><span>Chi tiết</span></a>
                                                     <a title="Wishlist" href="#"><i
                                                             class="bi bi-heart"></i><span>Yêu
                                                             thích</span></a>
@@ -187,9 +180,9 @@
                                         <div class="product-content">
                                             <h3><a>{{ $p->name }}</a></h3>
                                             <div class="product-price">
-                                                <span>{{ number_format($p->sale_price) }} VND</span>
+                                                <span>{{ number_format($p->sale_price) }} ₫</span>
                                                 <del class="" style="opacity:0.5;">{{ number_format($p->price) }}
-                                                    VND</del>
+                                                    ₫</del>
                                             </div>
                                         </div>
                                     </div>

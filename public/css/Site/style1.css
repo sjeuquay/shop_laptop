@@ -61,6 +61,10 @@
   box-sizing: border-box;
 }
 
+ol, ul {
+	padding-left: 0 !important;
+}
+
 html, body {
   height: 100%;
 }
@@ -12900,12 +12904,14 @@ a {
 }
 @media screen and (min-width: 990px) {
   .img-main_product{
-    height: 500px !important;
+    display: flex;
+    justify-content: center;
+    height: 300px !important;
   }
 }
 @media screen and (max-width: 768px) {
   .img-main_product{
-    height: 500px !important;
+    height: 300px !important;
   }
 }
 @media screen and (max-width: 480px) {
@@ -12918,3 +12924,70 @@ a {
   }
 }
 /*# sourceMappingURL=style.css.map */
+
+/* Modal styles */
+/* Modal styles */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 50% !important;
+  top: -100%; /* Start off-screen */
+  transform: translateX(-50%);
+  max-width: 400px;
+  max-height: 300px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  text-align: center;
+  transition: top 0.5s ease-in-out; /* Smooth transition */
+}
+
+/* Modal visible state */
+.modal.show {
+  display: block;
+  top: 50% !important;
+  transform: translate(-50%, -50%);
+}
+
+/* Overlay styles */
+.overlay {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 999; /* Sit behind the modal */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Close button styles */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-register_product {
+  border-color: #ff6a28 !important;
+  color: #ff6a28 !important;
+}
+.btn-register_product:hover {
+  border-color: #000 !important;
+  color: #fff !important;
+}
+
+.btn-login_product{
+  background-color: #ff6a28 !important;
+  border: #fff !important;
+}
+
+.btn-login_product:hover {
+  background-color: #000 !important;
+  color: #fff !important;
+}

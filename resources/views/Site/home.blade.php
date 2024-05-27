@@ -78,10 +78,10 @@
                                                         <div class="product-content">
                                                             <h3><a>{{ $p->name }}</a></h3>
                                                             <div class="product-price">
-                                                                <span>{{ number_format($p->sale_price) }} VND</span>
+                                                                <span>{{ number_format($p->sale_price) }} ₫</span>
                                                                 <del class=""
                                                                     style="opacity:0.5;">{{ number_format($p->price) }}
-                                                                    VND</del>
+                                                                    ₫</del>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -148,10 +148,10 @@
                                                             <h3><a>{{ $p->name }}</a>
                                                             </h3>
                                                             <div class="product-price">
-                                                                <span>{{ number_format($p->sale_price) }} VND</span>
+                                                                <span>{{ number_format($p->sale_price) }} ₫</span>
                                                                 <del class=""
                                                                     style="opacity:0.5;">{{ number_format($p->price) }}
-                                                                    VND</del>
+                                                                    ₫</del>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -242,9 +242,9 @@
                                     <div class="product-content">
                                         <h3><a>{{ $p->name }}</a></h3>
                                         <div class="product-price">
-                                            <span>{{ number_format($p->sale_price) }} VND</span>
+                                            <span>{{ number_format($p->sale_price) }} ₫</span>
                                             <del class="" style="opacity:0.5;">{{ number_format($p->price) }}
-                                                VND</del>
+                                                ₫</del>
                                         </div>
                                     </div>
                                 </div>
