@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart_Checkout\Cart;
+use App\Models\Cart_Checkout\CartItem;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
@@ -48,7 +50,7 @@ class UserController extends Controller
         );
         try {
             $request->merge(['password'=>Hash::make($request->password)]);
-
+    
             User::create($request->all());
             return redirect()->route('login');
         }catch(\Throwable $throwable) {
@@ -78,7 +80,12 @@ class UserController extends Controller
         } else {
             if (Auth::attempt(['user_name' => $request->user_name, 'password' => $request->password])) {
                 if (Auth::user()->role_id == '1') {
-                    
+                    $cart = Cart::where('user_id', $user->id)->first();
+                    $cartItems = [];
+                    if($cart) {
+                        $cartItems = CartItem::where('cart_id', $cart->id)->get();
+                    }
+                    session()->put('cart'. Auth::id(), $cartItems);
                     return redirect()->route('home');
                 } else {
                     // admin dashboard

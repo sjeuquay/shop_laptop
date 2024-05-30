@@ -23,23 +23,7 @@
                      <!-- Top Right -->
                      <div class="right-content">
                          <ul class="list-main d-flex align-items-center">
-                             @if (auth()->check())
-                                 <li class="dropdown overlay-account">
-                                     <i class="bi bi-person"></i>
-                                     <a href="#" class="dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                                         aria-expanded="false">{{ auth()->user()->name }}</a>
-                                     <ul class="dropdown-menu" id="myDropdown">
-                                         <li><a style="background-color: transparent" class="dropdown-item"
-                                                 href="#">Thông tin tài khoản</a></li>
-                                         <li><a style="background-color: transparent" class="dropdown-item"
-                                                 href="#">Lịch sử mua hàng</a></li>
-                                         <li><a style="background-color: transparent" class="dropdown-item"
-                                                 href="#">Yêu thích</a></li>
-                                         <li><a style="background-color: transparent" class="dropdown-item"
-                                                 href="{{ route('logout') }}">Đăng xuất</a></li>
-                                     </ul>
-                                 </li>
-                             @else
+                             @if (!auth()->check())
                                  <li class="d-flex align-items-center">
                                      <i class="bi bi-power"></i>
                                      <a class="mx-1" href="{{ route('login') }}">Đăng nhập</a>
@@ -101,29 +85,67 @@
                          <div class="sinlge-bar">
                              <a href="#" class="single-icon"><i class="bi bi-heart"></i></a>
                          </div>
+                         @if (auth()->check())
+                             <div class="sinlge-bar dropdown overlay-account">
+                                 <a href="#" class="single-icon"><i class="bi bi-person-circle"></i></a>
+                                 <ul class="dropdown-menu">
+                                     <li><a style="background-color: transparent" class="dropdown-item"
+                                             href="#">Thông tin tài khoản</a></li>
+                                     <li><a style="background-color: transparent" class="dropdown-item"
+                                             href="#">Lịch sử mua hàng</a></li>
+                                     <li><a style="background-color: transparent" class="dropdown-item"
+                                             href="{{ route('logout') }}">Đăng xuất</a></li>
+                                 </ul>
+                             </div>
+                         @endif
                          <div class="sinlge-bar shopping">
                              <a href="{{ route('cart') }}" class="single-icon"><i class="bi bi-bag"></i> <span
                                      class="total-count">
-                                     {{ $amount }}
+                                     @if (session()->has('cart' . Auth::id()) && !empty(session('cart' . Auth::id())))
+                                         {{ session('cart' . Auth::id())->count() }}
+                                     @else
+                                         0
+                                     @endif
                                  </span></a>
                              <!-- Shopping Item -->
                              <div class="shopping-item d-block" style="display: block !important;">
                                  <div class="dropdown-cart-header">
-                                     <span>{{ $amountProduct }} sản phẩm</span>
+                                     <span>
+                                         @if (session()->has('cart' . Auth::id()) && !empty(session('cart' . Auth::id())))
+                                             {{ session('cart' . Auth::id())->count() }}
+                                         @endif sản phẩm
+                                     </span>
                                      <a href="{{ route('cart') }}">Giỏ hàng</a>
                                  </div>
                                  <ul class="shopping-list">
-                                     @if (!empty($cart))
-                                         @foreach ($cart->cartItem as $cartItem)
+                                     @php
+                                         $total = 0;
+                                     @endphp
+                                     @if (session()->has('cart' . Auth::id()) && !empty(session('cart' . Auth::id())))
+                                         @foreach (session('cart' . Auth::id()) as $key => $item)
+                                             @php
+                                                 $total += $item->total_price;
+                                             @endphp
                                              <li>
-                                                 <a href="#" class="remove" title="Remove this item"><i
-                                                         class="bi bi-trash3"></i></a>
+                                                 <form
+                                                     action="{{ route('deleteCart', ['id' => $key, 'id_cart' => $item->id]) }}"
+                                                     method="POST" style="display:inline;">
+                                                     @csrf
+                                                     <button type="submit" class="btn-sm btn-cart_trash"
+                                                         style="outline: none;">
+                                                         <i class="bi bi-trash3"></i>
+                                                     </button>
+                                                 </form>
                                                  <a class="cart-img" href="#"><img
-                                                         src="{{asset('images/product/'.$cartItem->product->image)}}" alt="#"></a>
+                                                         src="{{ asset('images/product/' . $item->product->image) }}"
+                                                         alt="#"></a>
                                                  <h4>
-                                                    <a href="#" class="text-truncate text-overflow_truncate">{{$cartItem->product->name}}</a>
-                                                </h4>
-                                                 <p class="quantity">{{$cartItem->quantity}}x - <span class="amount">{{ number_format($cartItem->price, 0, ',', '.') }} ₫</span></p>
+                                                     <a href="#"
+                                                         class="text-truncate text-overflow_truncate">{{ $item->product->name }}</a>
+                                                 </h4>
+                                                 <p class="quantity">{{ $item->quantity }}x - <span
+                                                         class="amount">{{ number_format($item->price, 0, ',', '.') }}
+                                                         ₫</span></p>
                                              </li>
                                          @endforeach
                                      @endif
@@ -131,9 +153,18 @@
                                  <div class="bottom">
                                      <div class="total">
                                          <span>Tổng tiền</span>
-                                         <span class="total-amount">{{number_format($total, 0, ',', '.')}}₫</span>
+                                         <span class="total-amount">{{ number_format($total, 0, ',', '.') }}₫</span>
                                      </div>
-                                     <a href="checkout.html" class="btn animate">Thanh toán</a>
+                                     @if (auth()->check())
+                                         @if (session()->has('cart' . Auth::id()) && count(session()->get('cart' . Auth::id())))
+                                             <a href="{{ route('checkout') }}" class="btn animate">Thanh toán</a>
+                                         @else
+                                             <a href="{{ route('shop') }}" class="btn animate">Mua sắm</a>
+                                         @endif
+                                     @else
+                                         <a href="{{ route('login') }}" class="btn animate">Đăng nhập</a>
+                                     @endif
+
                                  </div>
                              </div>
                              <!--/ End Shopping Item -->

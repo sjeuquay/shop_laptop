@@ -35,6 +35,9 @@ Version:1.0
 20. 404 Error CSS
 21. Footer CSS
 ========================================*/
+:root{
+ --primary-color:#F7941D;	
+}
 ol, ul {
 	padding-left: 0;
 }
@@ -2459,6 +2462,64 @@ ol, ul {
 .shop.single .product-des .size ul li {
 	display: inline-block;
 	margin-right: 5px;
+}
+.cart-box_img {
+	width: 85px;
+	display: flex;
+	justify-content: center;
+}
+@media screen and (max-width: 768px) {
+	.cart-box_img {
+		width: 100%;
+	}
+}
+.cart-truncate {
+	display: block; /* Fallback trong trường hợp trình duyệt không hỗ trợ display dạng box */
+	display: -webkit-box;
+	line-height: 16px; /* Fallback */
+	max-height: 16px; /* Fallback số dòng bạn muốn giới hạn, ví dụ: 1 dòng */
+	-webkit-line-clamp: 1; /* Số dòng bạn muốn giới hạn */
+	-webkit-box-orient: vertical; /* Cần thiết cho -webkit-line-clamp */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 300px; 
+	white-space: normal; /* Điều này cho phép ngắt dòng */
+	margin-bottom: 10px;
+}
+.cart-name-truncate {
+	display: block; /* Fallback trong trường hợp trình duyệt không hỗ trợ display dạng box */
+	display: -webkit-box;
+	line-height: 16px; /* Fallback */
+	max-height: 30px; /* Fallback số dòng bạn muốn giới hạn, ví dụ: 1 dòng */
+	-webkit-line-clamp: 2; /* Số dòng bạn muốn giới hạn */
+	-webkit-box-orient: vertical; /* Cần thiết cho -webkit-line-clamp */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 300px; 
+	white-space: normal; /* Điều này cho phép ngắt dòng */
+}
+.btn-sm {
+	background-color: transparent;
+	border: none !important;
+	outline: none;
+}
+.btn-cart_trash {
+	position: absolute;
+    left: 0;
+    bottom: 16px;
+    margin-top: -20px;
+    height: 20px;
+    width: 20px;
+    line-height: 18px;
+    text-align: center;
+    background: #fff;
+    color: #222;
+    border-radius: 0;
+    font-size: 11px;
+}
+.btn-sm:hover {
+	color: var(--primary-color) !important;
+	background-color: transparent !important;
 }
 .shop.single .product-des .size ul li:last-child{
 	margin-right:0;
@@ -4960,6 +5021,7 @@ ol, ul {
     position: absolute;
     top: 100%; /* Hiển thị dropdown dưới button */
     left: 0;
+	transform: translateX(-45%);
     z-index: 1000; /* Đảm bảo dropdown hiển thị trên các phần tử khác */
 }
 
@@ -4990,4 +5052,103 @@ ol, ul {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: normal; /* Ensure text wraps */
+}
+
+.custom-modal {
+	display: none; /* Ẩn modal mặc định */
+	position: fixed;
+	top: 50px; /* Hiển thị modal ở đầu màn hình */
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: white;
+	padding: 20px;
+	border: 1px solid green;
+	border-radius: 5px;
+	z-index: 9999; /* Đảm bảo modal hiển thị trên cùng */
+	max-height: 100px;
+}
+
+.close-btn {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	cursor: pointer;
+	font-weight: 800;
+}
+.modal.show {
+	display: block;
+	top: 50% !important;
+  }
+  
+  /* Overlay styles */
+  .overlay {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 999; /* Sit behind the modal */
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Close button styles */
+  .close {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	font-size: 30px;
+	font-weight: bold;
+	cursor: pointer;
+  }
+  .btn-register_product {
+	border: 1px solid #ff6a28 !important;
+	color: #ff6a28 !important;
+	background-color: transparent !important;
+  }
+  .btn-register_product:hover {
+	border-color: #000 !important;
+	color: #000 !important;
+  }
+
+  .card {
+    margin-bottom: 1.5rem;
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #c8ced3;
+    border-radius: .25rem;
+} 
+
+.card-header:first-child {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #f0f3f5;
+    border-bottom: 1px solid #c8ced3;
+}
+
+.table-order_confirm {
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.table-order-header thead th {
+	position: -webkit-sticky; /* for Safari */
+	position: sticky;
+	top: 0;
+	background: #fff;
+	z-index: 1;
 }

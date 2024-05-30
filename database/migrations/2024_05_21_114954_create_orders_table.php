@@ -12,16 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->integer('id')->autoIncrement();
+            $table->integer('id')->autoIncrement(); // This will create an auto incrementing primary key column
             $table->integer('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('status');
+            $table->unsignedInteger('status_id');
+            $table->foreign('status_id')->references('id')->on('status')->onDelete('cascade');
             $table->string('paymentMethod');
             $table->integer('amount');
             $table->integer('pay_amount');
-            $table->string('customer_notes');
-            $table->dateTime('date_created')->useCurrent();
-            $table->dateTime('date_delivery');
+            $table->string('zip', 6);
+            $table->string('phone', 10);
+            $table->string('ship_address1', 150);
+            $table->string('ship_address2', 150)->nullable();
+            $table->string('customer_notes', 255)->nullable();
+            $table->dateTime('date_delivery')->useCurrent();
         });
     }
 

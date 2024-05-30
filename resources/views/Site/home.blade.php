@@ -15,7 +15,7 @@
                                     <div class="hero-text">
                                         <h1 class="text-uppercase"><span>Giảm giá 100% </span>khi mua 50 máy</h1>
                                         <div class="button">
-                                            <a href="{{route('shop')}}" class="btn">Đến shop</a>
+                                            <a href="{{ route('shop') }}" class="btn">Đến shop</a>
                                         </div>
                                     </div>
                                 </div>
@@ -53,38 +53,56 @@
                                         <div class="row">
                                             @foreach ($products as $p)
                                                 <div class="col-xl-3 col-lg-4 col-md-4 col-12">
-                                                    <div class="single-product">
-                                                        <div class="product-img">
-                                                            <a href="{{ route('product', ['id' => $p->id]) }}">
-                                                                <img class="default-img"
-                                                                    src="{{ asset('images/product/' . $p->image) }}"
-                                                                    alt="#">
-                                                                <img class="hover-img"
-                                                                    src="{{ asset('images/product/' . $p->image) }}"
-                                                                    alt="#">
-                                                            </a>
-                                                            <div class="button-head">
-                                                                <div class="product-action">
-                                                                    <a title="Wishlist" href="#"><i
-                                                                            class="bi bi-heart"></i><span>Yêu
-                                                                            thích</span></a>
+                                                    <form action="{{ route('addcart', ['id' => $p->id]) }}" method="POST">
+                                                        @csrf
+                                                        <div class="single-product">
+                                                            <div class="product-img">
+                                                                <a href="{{ route('product', ['id' => $p->id]) }}">
+                                                                    <img class="default-img"
+                                                                        style="width: 235px;height:200px"
+                                                                        src="{{ asset('images/product/' . $p->image) }}"
+                                                                        alt="#">
+                                                                    <img class="hover-img" style="width: 235px;height:200px"
+                                                                        src="{{ asset('images/product/' . $p->image) }}"
+                                                                        alt="#">
+                                                                </a>
+                                                                <div class="button-head">
+                                                                    <div class="product-action">
+                                                                        <a title="Wishlist" href="#"><i
+                                                                                class="bi bi-heart"></i><span>Yêu
+                                                                                thích</span></a>
+                                                                    </div>
+                                                                    <div class="product-action-2">
+                                                                        @if (auth()->check())
+                                                                            <button class="border-0" type="submit"
+                                                                                style="background-color:transparent;outline:none;"><a
+                                                                                    title="Add to cart">Thêm vào giỏ
+                                                                                    hàng</a></button>
+                                                                        @else
+                                                                            <button
+                                                                                class="addToCartButton border-0 addToCart"
+                                                                                type="button"
+                                                                                style="background-color:transparent;outline:none;"><a
+                                                                                    title="Add to cart">Thêm vào giỏ
+                                                                                    hàng</a></button>
+                                                                        @endif
+                                                                    </div>
                                                                 </div>
-                                                                <div class="product-action-2">
-                                                                    <a title="Add to cart" href="#">Thêm vào giỏ
-                                                                        hàng</a>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <h3><a>{{ $p->name }}</a></h3>
+                                                                <div class="product-price">
+                                                                    <span>{{ $p->sale_price > 0 ? number_format($p->sale_price) : number_format($p->price) }}
+                                                                        ₫</span>
+                                                                    @if ($p->sale_price > 0)
+                                                                        <del class=""
+                                                                            style="opacity:0.5;">{{ number_format($p->price) }}
+                                                                            ₫</del>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="product-content">
-                                                            <h3><a>{{ $p->name }}</a></h3>
-                                                            <div class="product-price">
-                                                                <span>{{ number_format($p->sale_price) }} ₫</span>
-                                                                <del class=""
-                                                                    style="opacity:0.5;">{{ number_format($p->price) }}
-                                                                    ₫</del>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    </form>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -122,39 +140,56 @@
                                         <div class="row">
                                             @foreach ($productsView as $p)
                                                 <div class="col-xl-3 col-lg-4 col-md-4 col-12">
-                                                    <div class="single-product">
-                                                        <div class="product-img">
-                                                            <a href="{{ route('product', ['id' => $p->id]) }}">
-                                                                <img class="default-img"
-                                                                    src="{{ asset('images/product/' . $p->image) }}"
-                                                                    alt="#">
-                                                                <img class="hover-img"
-                                                                    src="{{ asset('images/product/' . $p->image) }}"
-                                                                    alt="#">
-                                                            </a>
-                                                            <div class="button-head">
-                                                                <div class="product-action">
-                                                                    <a title="Wishlist" href="#"><i
-                                                                            class="bi bi-heart"></i><span>Yêu
-                                                                            thích</span></a>
+                                                    <form action="{{ route('addcart', ['id' => $p->id]) }}" method="POST">
+                                                        @csrf
+                                                        <div class="single-product">
+                                                            <div class="product-img">
+                                                                <a href="{{ route('product', ['id' => $p->id]) }}">
+                                                                    <img class="default-img"
+                                                                        src="{{ asset('images/product/' . $p->image) }}"
+                                                                        alt="#">
+                                                                    <img class="hover-img"
+                                                                        src="{{ asset('images/product/' . $p->image) }}"
+                                                                        alt="#">
+                                                                </a>
+                                                                <div class="button-head">
+                                                                    <div class="product-action">
+                                                                        <a title="Wishlist" href="#"><i
+                                                                                class="bi bi-heart"></i><span>Yêu
+                                                                                thích</span></a>
+                                                                    </div>
+                                                                    <div class="product-action-2">
+                                                                        @if (auth()->check())
+                                                                            <button class="border-0" type="submit"
+                                                                                style="background-color:transparent;outline:none;"><a
+                                                                                    title="Add to cart">Thêm vào giỏ
+                                                                                    hàng</a></button>
+                                                                        @else
+                                                                            <button
+                                                                                class="addToCartButton border-0 addToCart"
+                                                                                type="button"
+                                                                                style="background-color:transparent;outline:none;"><a
+                                                                                    title="Add to cart">Thêm vào giỏ
+                                                                                    hàng</a></button>
+                                                                        @endif
+                                                                    </div>
                                                                 </div>
-                                                                <div class="product-action-2">
-                                                                    <a title="Add to cart" href="#">Thêm vào giỏ
-                                                                        hàng</a>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <h3><a>{{ $p->name }}</a>
+                                                                </h3>
+                                                                <div class="product-price">
+                                                                    <span>{{ $p->sale_price > 0 ? number_format($p->sale_price) : number_format($p->price) }}
+                                                                        ₫</span>
+                                                                    @if ($p->sale_price > 0)
+                                                                        <del class=""
+                                                                            style="opacity:0.5;">{{ number_format($p->price) }}
+                                                                            ₫</del>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="product-content">
-                                                            <h3><a>{{ $p->name }}</a>
-                                                            </h3>
-                                                            <div class="product-price">
-                                                                <span>{{ number_format($p->sale_price) }} ₫</span>
-                                                                <del class=""
-                                                                    style="opacity:0.5;">{{ number_format($p->price) }}
-                                                                    ₫</del>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    </form>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -220,34 +255,50 @@
                         <!-- Start Single Product -->
                         @if ($productsHot)
                             @foreach ($productsHot as $p)
-                                <div class="single-product">
-                                    <div class="product-img">
-                                        <a href="{{ route('product', ['id' => $p->id]) }}">
-                                            <img class="default-img" src="{{ asset('images/product/' . $p->image) }}"
-                                                alt="#">
-                                            <img class="hover-img" src="{{ asset('images/product/' . $p->image) }}"
-                                                alt="#">
-                                        </a>
-                                        <div class="button-head">
-                                            <div class="product-action">
-                                                <a title="Wishlist" href="#"><i class="bi bi-heart"></i><span>Yêu
-                                                        thích</span></a>
+                                <form action="{{ route('addcart', ['id' => $p->id]) }}" method="POST">
+                                    @csrf
+                                    <div class="single-product">
+                                        <div class="product-img">
+                                            <a href="{{ route('product', ['id' => $p->id]) }}">
+                                                <img class="default-img" src="{{ asset('images/product/' . $p->image) }}"
+                                                    alt="#">
+                                                <img class="hover-img" src="{{ asset('images/product/' . $p->image) }}"
+                                                    alt="#">
+                                            </a>
+                                            <div class="button-head">
+                                                <div class="product-action">
+                                                    <a title="Wishlist" href="#"><i
+                                                            class="bi bi-heart"></i><span>Yêu
+                                                            thích</span></a>
+                                                </div>
+                                                <div class="product-action-2">
+                                                    @if (auth()->check())
+                                                        <button class="border-0" type="submit"
+                                                            style="background-color:transparent;outline:none;"><a
+                                                                title="Add to cart">Thêm vào giỏ hàng</a></button>
+                                                    @else
+                                                        <button class="addToCartButton border-0 addToCart" type="button"
+                                                            style="background-color:transparent;outline:none;"><a
+                                                                title="Add to cart">Thêm vào giỏ
+                                                                hàng</a></button>
+                                                    @endif
+                                                </div>
                                             </div>
-                                            <div class="product-action-2">
-                                                <a title="Add to cart" href="#">Thêm vào giỏ
-                                                    hàng</a>
+                                        </div>
+                                        <div class="product-content">
+                                            <h3><a>{{ $p->name }}</a></h3>
+                                            <div class="product-price">
+                                                <span>{{ $p->sale_price > 0 ? number_format($p->sale_price) : number_format($p->price) }}
+                                                    ₫</span>
+                                                @if ($p->sale_price > 0)
+                                                    <del class=""
+                                                        style="opacity:0.5;">{{ number_format($p->price) }}
+                                                        ₫</del>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="product-content">
-                                        <h3><a>{{ $p->name }}</a></h3>
-                                        <div class="product-price">
-                                            <span>{{ number_format($p->sale_price) }} ₫</span>
-                                            <del class="" style="opacity:0.5;">{{ number_format($p->price) }}
-                                                ₫</del>
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             @endforeach
                         @endif
                     </div>
@@ -308,4 +359,8 @@
         </div>
     </section>
     <!-- End Shop Blog  -->
+
+    <x-modal name="Thêm vào giỏ hàng thành công"></x-modal>
+
+    @include('Site.Product.modal')
 @endsection

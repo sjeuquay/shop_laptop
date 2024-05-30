@@ -81,6 +81,9 @@
     <script src="{{ asset('js/Site/easing.js') }}"></script>
     <!-- Active JS -->
     <script src="{{ asset('js/Site/active.js') }}"></script>
+    <script src="{{ asset('js/Site/scipt.js') }}"></script>
+
+    @stack('modal')
 </body>
 
 </html>

@@ -69,10 +69,13 @@
                                 </div>
                                 <div class="product_price">
                                     <span class="current_price"
-                                        style="font-size: 30px;">{{ number_format($product->sale_price) }} ₫</span>
-                                    <span class="current_price" style="font-size: 20px">
-                                        <del style="opacity:0.5;">{{ number_format($product->price) }} ₫</del>
-                                    </span>
+                                        style="font-size: 30px;">{{ $product->sale_price > 0 ? number_format($product->sale_price) : number_format($product->price) }}
+                                        ₫</span>
+                                    @if ($product->sale_price > 0)
+                                        <span class="current_price" style="font-size: 20px">
+                                            <del style="opacity:0.5;">{{ number_format($product->price) }} ₫</del>
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="product_desc">
                                     <p>{{ $product->short_description }} </p>
@@ -84,13 +87,15 @@
                                 <div class="product_variant quantity">
                                     {{-- <button id="buyNowButton" class="button" type="submit" name="action" value="buy_now">Mua ngay</button> --}}
                                     @if (auth()->check())
-                                        <button class="button addToCartButton" type="submit">Thêm vào giỏ
+                                        <button class="button addToCartButton w-75" type="submit">Thêm vào giỏ
                                             hàng</button>
                                     @else
-                                        <button id="addToCartButton" class="button addToCartButton" type="button">Thêm vào
+                                        <button id="addToCartButton" class="button addToCartButton w-75" type="button">Thêm
+                                            vào
                                             giỏ
                                             hàng</button>
                                     @endif
+                                    <button class="button" style="font-size:20px;"><i class="bi bi-heart"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -212,35 +217,52 @@
                             <!-- Start Single Product -->
                             @if ($similar)
                                 @foreach ($similar as $p)
-                                    <div class="single-product">
-                                        <div class="product-img">
-                                            <a href="{{ route('product', ['id' => $p->id]) }}">
-                                                <img class="default-img" src="{{ asset('images/product/' . $p->image) }}"
-                                                    alt="#">
-                                                <img class="hover-img" src="{{ asset('images/product/' . $p->image) }}"
-                                                    alt="#">
-                                            </a>
-                                            <div class="button-head">
-                                                <div class="product-action">
-                                                    <a title="Wishlist" href="#"><i
-                                                            class="bi bi-heart"></i><span>Yêu
-                                                            thích</span></a>
+                                    <form action="{{ route('addcart', ['id' => $p->id]) }}" method="POST">
+                                        @csrf
+                                        <div class="single-product">
+                                            <div class="product-img">
+                                                <a href="{{ route('product', ['id' => $p->id]) }}">
+                                                    <img class="default-img"
+                                                        src="{{ asset('images/product/' . $p->image) }}" alt="#">
+                                                    <img class="hover-img"
+                                                        src="{{ asset('images/product/' . $p->image) }}" alt="#">
+                                                </a>
+                                                <div class="button-head">
+                                                    <div class="product-action">
+                                                        <a title="Wishlist" href="#"><i
+                                                                class="bi bi-heart"></i><span>Yêu
+                                                                thích</span></a>
+                                                    </div>
+                                                    <div class="product-action-2">
+                                                        @if (auth()->check())
+                                                            <button class="border-0" type="submit"
+                                                                style="background-color:transparent;outline:none;"><a
+                                                                    title="Add to cart">Thêm vào giỏ
+                                                                    hàng</a></button>
+                                                        @else
+                                                            <button class="addToCartButton border-0 addToCart"
+                                                                type="button"
+                                                                style="background-color:transparent;outline:none;"><a
+                                                                    title="Add to cart">Thêm vào giỏ
+                                                                    hàng</a></button>
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                                <div class="product-action-2">
-                                                    <a title="Add to cart" href="#">Thêm vào giỏ
-                                                        hàng</a>
+                                            </div>
+                                            <div class="product-content">
+                                                <h3><a>{{ $p->name }}</a></h3>
+                                                <div class="product-price">
+                                                    <span>{{ $p->sale_price > 0 ? number_format($p->sale_price) : number_format($p->price) }}
+                                                        ₫</span>
+                                                    @if ($p->sale_price > 0)
+                                                        <del class=""
+                                                            style="opacity:0.5;">{{ number_format($p->price) }}
+                                                            ₫</del>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="product-content">
-                                            <h3><a>{{ $p->name }}</a></h3>
-                                            <div class="product-price">
-                                                <span>{{ number_format($p->sale_price) }} ₫</span>
-                                                <del class="" style="opacity:0.5;">{{ number_format($p->price) }}
-                                                    ₫</del>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </form>
                                 @endforeach
                             @endif
                         </div>
@@ -251,6 +273,7 @@
         <!-- End Most Popular Area -->
     </div>
 
+    {{-- không cho đặt hàng --}}
     <div id="cartModal" class="modal">
         <div class="modal-content h-100 border-0">
             <span id="closeModal" class="close">&times;</span>
@@ -263,7 +286,7 @@
                 <p class="py-4">Vui lòng đăng nhập để mua hàng và thanh toán dễ dàng hơn</p>
                 <div class="d-flex">
                     <div class="mx-2">
-                        <a href="{{ route('register') }}" class="btn btn-outline-dark btn-register_product">Đăng Ký</a>
+                        <a href="{{ route('register') }}" class="btn  btn-register_product">Đăng Ký</a>
                     </div>
                     <div class="mx-2">
                         <a href="{{ route('login') }}" class="btn text-white btn-dark btn-login_product">Đăng Nhập</a>
@@ -276,50 +299,38 @@
     <!-- Overlay -->
     <div id="modalOverlay" class="overlay"></div>
 
+    <!-- modal thanh toán thành công  -->
+    <div id="cartSuccessModal" class="custom-modal">
+        <div class="modal-content border-0" style="height:100%;">
+            <div class="text-center">
+                <p style="font-size: 20px;color:green;"><i class="bi bi-bag-check"></i></p>
+                <p class="text-success">Thêm vào giỏ hàng thành công</p>
+            </div>
+        </div>
+    </div>
+
     <link rel="stylesheet" href="{{ asset('js/Site/plugins.js') }}">
     <link rel="stylesheet" href="{{ asset('js/Site/main.js') }}">
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var thumbnails = document.querySelectorAll('.thumbnail-link');
-            var mainImage = document.getElementById('zoom1');
+    {{-- modal thêm thành công --}}
+    @push('modal')
+        @if (session('success'))
+            <script>
+                $(document).ready(function() {
+                    // Hiển thị modal
+                    $('#cartSuccessModal').show();
 
-            thumbnails.forEach(function(thumbnail) {
-                // Lắng nghe sự kiện click
-                thumbnail.addEventListener('click', function(event) {
-                    event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ a
-                    var newImageSrc = this.getAttribute(
-                        'data-image'); // Lấy đường dẫn ảnh từ thuộc tính data-image
-                    mainImage.src = newImageSrc; // Thay đổi đường dẫn ảnh của thẻ chính
+                    // Tự động ẩn modal sau 3 giây
+                    setTimeout(function() {
+                        $('#cartSuccessModal').hide();
+                    }, 3000);
                 });
-            });
-        });
 
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var addToCartButton = document.getElementById('addToCartButton');
-            var modal = document.getElementById('cartModal');
-            var overlay = document.getElementById('modalOverlay');
-            var closeModal = document.getElementById('closeModal');
-
-            // Show modal and overlay when "Thêm vào giỏ hàng" button is clicked
-            addToCartButton.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent the default action
-                modal.classList.add('show');
-                overlay.style.display = 'block';
-            });
-
-            // Hide modal and overlay when the close button is clicked
-            closeModal.addEventListener('click', function() {
-                modal.classList.remove('show');
-                overlay.style.display = 'none';
-            });
-
-            // Hide modal and overlay when the overlay is clicked
-            overlay.addEventListener('click', function() {
-                modal.classList.remove('show');
-                overlay.style.display = 'none';
-            });
-        });
-    </script>
+                // Hàm để ẩn modal
+                function hideModal() {
+                    $('#cartSuccessModal').hide();
+                }
+            </script>
+        @endif
+    @endpush
     <!-- Main JS -->
 @endsection

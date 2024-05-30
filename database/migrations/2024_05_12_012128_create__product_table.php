@@ -19,7 +19,7 @@ return new class extends Migration
             $table->tinyInteger('is_stock')->default(1);
             $table->integer('hot');
             $table->integer('price');
-            $table->integer('sale_price');
+            $table->integer('sale_price')->nullable();
             $table->integer('quantity_available');
             $table->integer('view');
             $table->string('image', 200);
