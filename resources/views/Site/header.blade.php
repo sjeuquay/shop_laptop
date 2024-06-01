@@ -102,7 +102,14 @@
                              <a href="{{ route('cart') }}" class="single-icon"><i class="bi bi-bag"></i> <span
                                      class="total-count">
                                      @if (session()->has('cart' . Auth::id()) && !empty(session('cart' . Auth::id())))
-                                         {{ session('cart' . Auth::id())->count() }}
+                                         @php
+                                             $totalQuantity = 0;
+                                             $cartItems = session('cart' . Auth::id());
+                                             foreach ($cartItems as $item) {
+                                                 $totalQuantity += $item['quantity'];
+                                             }
+                                         @endphp
+                                         {{ $totalQuantity }}
                                      @else
                                          0
                                      @endif

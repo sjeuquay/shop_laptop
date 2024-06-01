@@ -122,8 +122,8 @@
                                             @php
                                                 $cart = session('cartTotal' . Auth::id());
                                             @endphp
-                                            <li>Tổng phụ<span>{{ number_format($cart->total_price) }}₫</span></li>
-                                            <li class="last">Tổng<span>{{ number_format($cart->total_price) }}₫</span>
+                                            <li>Tổng phụ<span>{{ number_format($cart) }}₫</span></li>
+                                            <li class="last">Tổng<span>{{ number_format($cart) }}₫</span>
                                             </li>
                                         @endif
                                     </ul>

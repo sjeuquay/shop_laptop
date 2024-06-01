@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
 use App\Models\Category;
+use App\Models\Product\Customer;
 use App\Models\Product\Thumnail;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product\Specifications;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -20,9 +22,9 @@ class ProductController extends Controller
             $thumbnail = null;
             $products = Product::orderBy('time_up', 'desc')->limit(12)->get();
             $productsHot = Product::where('hot', 1)->limit(12)->get();
-              
+
             $productsView = Product::orderBy('view', 'desc')->limit(12)->get();
-    
+
             if ($id) {
                 $productsDemo = Product::findOrFail($id);
                 $thumbnail = Thumnail::where('product_id', $productsDemo->id)->get();
@@ -79,10 +81,12 @@ class ProductController extends Controller
                 ->where('id', '!=', $product->id)
                 ->limit(10)
                 ->get();
+            $customer = Customer::where('user_id', auth::id())
+                                ->where('product_id', $id)
+                                ->paginate(5);
         } catch (\Throwable) {
-            
         }
-        return view('Site.Product.product', compact('product', 'similar', 'thumbnail', 'specifications'));
+        return view('Site.Product.product', compact('customer','product', 'similar', 'thumbnail', 'specifications'));
     }
 
     public function search(Request $request)
@@ -97,5 +101,32 @@ class ProductController extends Controller
         return view('Site.Product.search', compact('search', 'keyword'));
     }
 
-    
+    public function customer(Request $request, string $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'comment' => 'required',
+            'email' => [
+                'required',
+                'regex:/^.+@.+\..+$/i'
+            ],
+            [
+                'name.reuqired' => 'Vui lòng nhập tên',
+                'comment.reuqired' => 'Vui lòng nhập nội dung đánh giá',
+                'email.reuqired' => 'Vui lòng nhập email',
+                'email.regex' => 'Vui lòng nhập đúng định dạng email'
+            ]
+        ]);
+
+        $userId = Auth::id();
+
+        $customer = new Customer();
+        $customer->fill($request->all());
+        $customer->user_id = $userId;
+        $customer->product_id = $id;
+        $customer->content = $request->comment;
+        $customer->save();
+
+        return redirect()->back();
+    }
 }

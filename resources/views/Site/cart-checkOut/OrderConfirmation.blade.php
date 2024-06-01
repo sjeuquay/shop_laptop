@@ -4,13 +4,18 @@
 @section('content')
 
     <div class="container p-5">
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
         <div id="ui-view" data-select2-id="ui-view">
             <div>
                 <div class="card">
                     <div class="card-header align-items-center d-flex justify-content-between">
                         <div class="">
                             Mã đơn hàng:
-                            <strong>#ASBF02</strong>
+                            <strong>#ASBF0{{ $order->id }}</strong>
                         </div>
                         <div class="">
                             <a class="btn text-white btn-outline-dark float-right mr-1 d-print-none" href="#"
@@ -25,13 +30,10 @@
                         <div class="row mb-4">
                             <div class="col-sm-4">
                                 <h6 class="mb-3 text-uppercase">Người đặt:</h6>
-                                <div>
-                                    <strong>BBBootstrap.com</strong>
-                                </div>
-                                <div>42, Awesome Enclave</div>
-                                <div>New York City, New york, 10394</div>
-                                <div>Email: admin@bbbootstrap.com</div>
-                                <div>Phone: +48 123 456 789</div>
+                                <div>{{ $order->user->name }}</div>
+                                <div>{{ $order->ship_address1 }}</div>
+                                <div>{{ $order->email }}</div>
+                                <div>{{ $order->phone }}</div>
                             </div>
                         </div>
 
@@ -42,20 +44,23 @@
                                         <th class="center">#</th>
                                         <th>Sản phẩm</th>
                                         <th>Mô tả</th>
-                                        <th class="center">Giá</th>
-                                        <th class="right">Số lượng</th>
-                                        <th class="right">Tổng tiền</th>
+                                        <th class="text-center">Giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Tổng tiền</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="center">1</td>
-                                        <td class="left">Iphone 10</td>
-                                        <td class="left">Apple iphoe 10 with extended warranty</td>
-                                        <td class="center">16</td>
-                                        <td class="right">$999,00</td>
-                                        <td class="right">$999,00</td>
-                                    </tr>
+
+                                    @foreach ($order->orderDetail as $key => $orderItem)
+                                        <tr>
+                                            <td class="center">{{$key + 1}}</td>
+                                            <td class="text-left text-truncate" style="max-width: 150px;">{{$orderItem->product->name}}</td>
+                                            <td class="text-left text-truncate" style="max-width: 150px;">{{$orderItem->product->short_description}}</td>
+                                            <td class="text-center">{{number_format($orderItem->unit_price)}}₫</td>
+                                            <td class="text-center">{{$orderItem->quantity}}</td>
+                                            <td class="text-center">{{number_format($orderItem->sub_price)}}₫</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -63,9 +68,7 @@
                         <div class="row">
                             <div class="col-lg-4 col-sm-5">
                                 <p style="font-weight:600;">Lời nhắn</p>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo modi vero quisquam dolor
-                                    maxime voluptatum adipisci soluta voluptatem doloribus, odio commodi dolorem libero. Non
-                                    corrupti voluptas culpa minus quas quasi!</p>
+                                <p>{{$order->customer_notes}}</p>
                             </div>
                             <div class="col-lg-4 col-sm-5 ml-auto">
                                 <table class="table table-clear" style="height:auto;">
@@ -74,10 +77,10 @@
                                             <td class="left">
                                                 <strong>Tổng phụ</strong>
                                             </td>
-                                            <td class="right text-center">$8.497,00</td>
+                                            <td class="right text-center">{{number_format($order->pay_amount)}}₫</td>
                                         </tr>
                                         <tr class="text-end">
-                                            <td class="left" >
+                                            <td class="left">
                                                 <strong>VAT (0%)</strong>
                                             </td>
                                             <td class="right text-center">0</td>
@@ -87,7 +90,7 @@
                                                 <strong>Tổng tiền</strong>
                                             </td>
                                             <td class="right text-center">
-                                                <strong>$7.477,36</strong>
+                                                <strong>{{number_format($order->pay_amount)}}₫</strong>
                                             </td>
                                         </tr>
                                     </tbody>

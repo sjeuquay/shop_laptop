@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('content', 255);
             $table->string('name', 20);
             $table->string('email', 50);
+            $table->dateTime('date_created')->useCurrent();
         });
     }
 

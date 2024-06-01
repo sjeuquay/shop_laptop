@@ -26,6 +26,7 @@ Route::post('/cart/{id?}', [CartController::class, 'AddCart'])->name('addcart');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart');
 Route::post('/cart/{id?}/{id_cart?}', [CartController::class, 'remove'])->name('deleteCart');
 Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('updateQuantity');
+Route::post('/update-cart', [CartController::class, 'updateCart'])->name('updateCart');
     
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 
@@ -40,4 +41,6 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
 
-Route::get('/orderconfirmation', [CheckoutController::class, 'OrderConfirmation'])->name('OrderConfirmation');
+Route::get('/orderconfirmation/{id?}', [CheckoutController::class, 'OrderConfirmation'])->name('OrderConfirmation');
+
+Route::post('/product/{id?}', [ProductController::class, 'customer'])->name('customer');

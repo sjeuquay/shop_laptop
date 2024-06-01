@@ -64,7 +64,7 @@
                                         <li><a href="#"><i class="bi bi-star-fill"></i></a></li>
                                         <li><a href="#"><i class="bi bi-star-fill"></i></a></li>
                                         <li><a href="#"><i class="bi bi-star-fill"></i></a></li>
-                                        <li class="review"><a href="#"> 1 đánh giá</a></li>
+                                        <li class="review"><a href="#"> {{count($customer)}} đánh giá</a></li>
                                     </ul>
                                 </div>
                                 <div class="product_price">
@@ -171,26 +171,60 @@
                                 </div>
                                 <div class="tab-pane fade" id="reviews" role="tabpanel">
                                     <div class="product_review_form">
-                                        <form action="#">
+                                        <form action="{{ route('customer', ['id' => $product->id]) }}" method="POST">
+                                            @csrf
                                             <h2>Gửi đánh giá của bạn</h2>
                                             <p>Địa chỉ email của bạn sẽ được bảo mật</p>
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <label for="review_comment">Đánh giá của bạn</label>
-                                                    <textarea name="comment" id="review_comment"></textarea>
+                                                    <label for="review_comment">Đánh giá của bạn<span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="comment" id="review_comment" class="form-control @error('comment') is-invalid @enderror"></textarea>
+                                                    @error('comment')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-6">
-                                                    <label for="author">Tên</label>
-                                                    <input id="author" type="text">
-
+                                                    <label for="author">Tên</label><span class="text-danger">*</span>
+                                                    <input name="name" id="author" type="text"
+                                                        class="form-control @error('name') is-invalid @enderror"
+                                                        value="{{ old('name', auth()->user()->name) }}">
+                                                    @error('name')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                                 <div class="col-lg-6 col-md-6">
-                                                    <label for="email">Email </label>
-                                                    <input id="email" type="text">
+                                                    <label for="email">Email<span class="text-danger">*</span></label>
+                                                    <input name="email" id="email" type="text" form-control
+                                                        @error('email') is-invalid @enderror>
+                                                    @error('email')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <button type="submit">Gửi</button>
+                                            <button type="submit">Đăng</button>
                                         </form>
+                                    </div>
+                                    <div class="my-4">
+                                        <h4 class="text-uppercase mb-4 title-customer">bài Đánh giá</h4>
+                                        <div class="">
+                                            @if (count($customer))
+                                                @foreach ($customer as $review)
+                                                    <div class="p-3 px-4 my-3 border">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <span class="text-uppercase"
+                                                                    style="font-weight: 600; font-size:15px;">{{$review->name}}</span>
+                                                                <p style="font-size:13px;">{{ \Carbon\Carbon::parse($review->date_created)->format('d/m/Y - H:i:s') }}</p>
+                                                            </div>
+                                                            <div class="col-8">
+                                                                <p>{{$review->content}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -45,6 +45,12 @@
                                 @foreach (session('cart' . Auth::id()) as $key => $item)
                                     @php
                                         $total += $item->total_price;
+                                        $sub_price = 0;
+                                        $price =
+                                            $item->product->sale_price > 0
+                                                ? $item->product->sale_price
+                                                : $item->product->price;
+                                        $sub_price = $item->quantity * $price;
                                     @endphp
                                     <tr>
                                         <td class="image" data-title="No">
@@ -55,37 +61,43 @@
                                         </td>
                                         <td class="product-des" data-title="Description">
                                             <p class="product-name cart-name-truncate mb-3">
-                                                <a href="#">{{ $item->product->name }}</a>
+                                                <a
+                                                    href="{{ route('product', ['id' => $item->product->id]) }}">{{ $item->product->name }}</a>
                                             </p>
                                             <p class="product-des cart-truncate">{{ $item->product->short_description }}</p>
                                         </td>
                                         <td class="price" data-title="Price">
-                                            <span>{{ $item->product->sale_price > 0 ? number_format($item->product->sale_price, 0, ',', '.') : number_format($item->product->price, 0, ',', '.') }}
+                                            <span>{{ number_format($price) }}
                                                 ₫</span>
                                         </td>
-                                        <td class="qty" data-title="Qty">
-                                            <div class="input-group">
-                                                <div class="button minus">
-                                                    <button type="button" class="btn btn-primary btn-number"
-                                                        data-type="minus" data-field="quant[{{ $key }}]">
-                                                        <i class="bi bi-dash"></i>
-                                                    </button>
+                                        <form action="{{ route('updateCart') }}" method="POST">
+                                            @csrf
+                                            <td class="qty" data-title="Qty">
+                                                <div class="input-group">
+                                                    <div class="button minus">
+                                                        <button type="button" class="btn btn-primary btn-number"
+                                                            data-type="minus" data-field="quant[{{ $key }}]"
+                                                            data-index="{{ $key }}">
+                                                            <i class="bi bi-dash"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input type="text" name="quant[{{ $key }}]"
+                                                        class="input-number" data-item-id="{{ $item->id }}"
+                                                        data-min="1" data-max="{{ $item->product->quantity_available }}"
+                                                        data-index="{{ $key }}" value="{{ $item->quantity }}">
+                                                    <div class="button plus">
+                                                        <button type="button" class="btn btn-primary btn-number"
+                                                            data-type="plus" data-field="quant[{{ $key }}]"
+                                                            data-index="{{ $key }}">
+                                                            <i class="bi bi-plus-lg"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <input type="text" name="quant[{{ $key }}]" class="input-number"
-                                                    data-item-id="{{ $item->id }}" data-min="1" data-max="100"
-                                                    value="{{ $item->quantity }}"
-                                                    onchange="updateQuantityInput({{ $item->id }}, this.value)">
-                                                <input type="hidden" id="csrf_token" value="{{ csrf_token() }}">
-                                                <div class="button plus">
-                                                    <button type="button" class="btn btn-primary btn-number"
-                                                        data-type="plus" data-field="quant[{{ $key }}]">
-                                                        <i class="bi bi-plus-lg"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        </form>
+
                                         <td class="total-amount" data-title="Total">
-                                            <span>{{ number_format($item->total_price, 0, ',', '.') }} ₫</span>
+                                            <span class="sub_price">{{ number_format($sub_price) }} ₫</span>
                                         </td>
                                         <td class="action" data-title="Remove">
                                             <form
@@ -123,10 +135,10 @@
                             <div class="col-lg-4 col-md-7 col-12">
                                 <div class="right">
                                     <ul>
-                                        <li>Tạm tính<span>{{ number_format($total, 0, ',', '.') }} ₫</span></li>
+                                        <li>Tạm tính<span>{{ number_format($total) }} ₫</span></li>
                                         <li>Phí ship<span>Free</span></li>
                                         {{-- <li>Giảm giá<span>$20.00</span></li> --}}
-                                        <li class="last">Tổng tiền<span>{{ number_format($total, 0, ',', '.') }} ₫</span>
+                                        <li class="last">Tổng tiền<span>{{ number_format($total) }} ₫</span>
                                         </li>
                                     </ul>
                                     <div class="button5">
@@ -147,123 +159,129 @@
         </div>
     </div>
     <!--/ End Shopping Cart -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to update the input value
-            function updateQuantity(button, action) {
-                var input = button.closest('.input-group').querySelector('.input-number');
-                var currentValue = parseInt(input.value);
-                var minValue = parseInt(input.getAttribute('data-min'));
-                var maxValue = parseInt(input.getAttribute('data-max'));
+    @push('quantity')
+        <script>
+            $(document).ready(function() {
+                $('.btn-number').click(function(e) {
+                    e.preventDefault();
 
-                if (isNaN(currentValue)) {
-                    currentValue = minValue; // Set default value if current value is not a number
-                }
+                    var fieldName = $(this).attr('data-field');
+                    var type = $(this).attr('data-type');
+                    var index = $(this).attr('data-index');
+                    var input = $("input[name='" + fieldName + "']");
+                    var currentVal = parseInt(input.val());
 
-                if (action === 'plus') {
-                    if (currentValue < maxValue) {
-                        input.value = currentValue + 1;
-                    }
-                } else if (action === 'minus') {
-                    if (currentValue > minValue) {
-                        input.value = currentValue - 1;
-                    }
-                }
-
-                // Disable/Enable buttons based on value
-                var newValue = parseInt(input.value);
-                var minusButton = button.closest('.input-group').querySelector('.btn-number[data-type="minus"]');
-                var plusButton = button.closest('.input-group').querySelector('.btn-number[data-type="plus"]');
-
-                if (newValue === minValue) {
-                    minusButton.setAttribute('disabled', true);
-                } else {
-                    minusButton.removeAttribute('disabled');
-                }
-
-                if (newValue === maxValue) {
-                    plusButton.setAttribute('disabled', true);
-                } else {
-                    plusButton.removeAttribute('disabled');
-                }
-            }
-
-            // Remove existing event listeners to prevent double triggering
-            document.querySelectorAll('.btn-number').forEach(function(button) {
-                var newButton = button.cloneNode(true);
-                button.parentNode.replaceChild(newButton, button);
-            });
-
-            // Event listeners for buttons
-            document.querySelectorAll('.btn-number').forEach(function(button) {
-                button.addEventListener('click', function(event) {
-                    var action = button.getAttribute('data-type');
-                    updateQuantity(button, action);
-
-                    // Prevent double triggering of the click event
-                    event.stopPropagation();
-                    event.preventDefault();
-                });
-            });
-
-            // Initialize button states on page load
-            document.querySelectorAll('.input-group').forEach(function(container) {
-                var input = container.querySelector('.input-number');
-                var minValue = parseInt(input.getAttribute('data-min'));
-                var maxValue = parseInt(input.getAttribute('data-max'));
-                var currentValue = parseInt(input.value);
-
-                if (isNaN(currentValue)) {
-                    currentValue = minValue; // Set default value if current value is not a number
-                }
-
-                var minusButton = container.querySelector('.btn-number[data-type="minus"]');
-                var plusButton = container.querySelector('.btn-number[data-type="plus"]');
-
-                if (currentValue === minValue) {
-                    minusButton.setAttribute('disabled', true);
-                }
-
-                if (currentValue === maxValue) {
-                    plusButton.setAttribute('disabled', true);
-                }
-            });
-        });
-
-        // update quantity
-        function updateQuantityInput() {
-            console.log(424);
-        }
-        // document.addEventListener("DOMContentLoaded", function() {
-        var quantityInputs = document.querySelectorAll('.input-number');
-        var csrfToken = document.getElementById('csrf_token').value;
-
-        quantityInputs.forEach(function(input) {
-            input.addEventListener('input', function() {
-                console.log(575);
-                var itemId = this.getAttribute('data-item-id');
-                var newQuantity = this.value;
-                console.log(itemId,
-                    newQuantity); // Log ra itemId và newQuantity khi giá trị của input thay đổi
-
-                // Gửi yêu cầu AJAX tới server
-                $.ajax({
-                    url: "{{ route('updateQuantity') }}",
-                    type: "POST",
-                    data: {
-                        _token: csrfToken,
-                        item_id: itemId,
-                        new_quantity: newQuantity
-                    },
-                    success: function(response) {
-                        // Xử lý phản hồi thành công nếu cần
-                    },
-                    error: function(xhr, status, error) {
-                        // Xử lý phản hồi lỗi nếu cần
+                    if (!isNaN(currentVal)) {
+                        if (type == 'minus') {
+                            if (currentVal > input.attr('data-min')) {
+                                input.val(currentVal - 1);
+                                $(".btn-number[data-type='plus'][data-index='" + index + "']").removeAttr(
+                                    'disabled');
+                            }
+                            if (parseInt(input.val()) <= input.attr('data-min')) {
+                                $(this).attr('disabled', true);
+                            }
+                        } else if (type == 'plus') {
+                            if (currentVal < input.attr('data-max')) {
+                                input.val(currentVal + 1);
+                                $(".btn-number[data-type='minus'][data-index='" + index + "']").removeAttr(
+                                    'disabled');
+                            }
+                            if (parseInt(input.val()) >= input.attr('data-max')) {
+                                $(this).attr('disabled', true);
+                            }
+                        }
+                        updateQuantity(input, index); // Gọi hàm với chỉ mục
+                    } else {
+                        input.val(0);
                     }
                 });
+
+                function updateQuantity(input, index) {
+                    var itemId = input.data('item-id');
+                    var quantity = input.val();
+
+                    console.log(itemId, quantity, index); // Log để kiểm tra các giá trị
+
+                    $.ajax({
+                        url: '{{ route('updateCart') }}',
+                        method: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content'),
+                            id: itemId,
+                            quantity: quantity,
+                            index: index // Gửi chỉ mục đến máy chủ
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Cập nhật tổng giá trị trên trang
+                                var total_price_element = $('#total-price-' +
+                                index); // Đặt id cho phần tử hiển thị tổng giá trị
+                                total_price_element.text(response.total_price);
+
+                                updateSubPrice(input);
+                            } else {
+                                console.error('Lỗi máy chủ:', response);
+                                alert('Đã xảy ra lỗi khi cập nhật giỏ hàng');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Lỗi AJAX:', error);
+                            alert('Đã xảy ra lỗi khi cập nhật giỏ hàng');
+                        }
+                    });
+                }
+
+                $('.input-number').on('input', function() {
+                    $(this).off('change');
+
+                    var input = $(this);
+                    var index = input.data('index'); // Lấy chỉ mục
+                    setTimeout(function() {
+                        updateQuantity(input, index); // Gọi hàm với chỉ mục
+                    }, 500); // Đặt một độ trễ để gọi updateQuantity sau khi người dùng dừng nhập
+                });
+
+                function updateSubPrice(input) {
+                    var quantity = parseInt(input.val()); // Chuyển đổi quantity thành số nguyên
+                    var priceText = input.closest('tr').find('.price span').text();
+                    var price = parseFloat(priceText.replace(/\D/g,
+                    '')); // Lấy giá trị của price và chuyển đổi thành số thực
+
+                    // Kiểm tra nếu quantity và price là số hợp lệ
+                    if (!isNaN(quantity) && !isNaN(price)) {
+                        var sub_price = quantity * price; // Tính toán sub_price
+
+                        // Định dạng sub_price với tiền tệ của Việt Nam và không có số lẻ
+                        var formatted_sub_price = number_format(sub_price) + ' ₫';
+
+                        // Hiển thị formatted_sub_price
+                        input.closest('tr').find('.total-amount span').text(formatted_sub_price);
+
+                        updateTotal();
+                    } else {
+                        console.log("Lỗi: quantity hoặc price không hợp lệ.");
+                    }
+                }
+
+                function updateTotal() {
+                    var total = 0;
+
+                    $('.sub_price').each(function() {
+                        var subPriceValue = parseFloat($(this).text().replace(/[,|.|\s]/g, ''));
+                        total += subPriceValue;
+                    });
+
+                    // Cập nhật cả hai phần "Tạm tính" và "Tổng tiền" với giá trị total
+                    $('ul li:nth-child(1) span').text(number_format(total) + ' ₫');
+                    $('ul li.last span').text(number_format(total) + ' ₫');
+                }
+
+                function number_format(number) {
+                    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
             });
-        });
-        // });
-    </script>
+        </script>
+    @endpush
+
 @endsection

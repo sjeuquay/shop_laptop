@@ -15,6 +15,12 @@ class CheckoutController extends Controller
 {
     public function checkout()
     {
+        $cartItem = CartItem::all();
+        $cartTotal = 0;
+        foreach ($cartItem as $item) {
+            $cartTotal += $item->total_price;
+        }
+        session()->put('cartTotal' . Auth::id(), $cartTotal);
         return view('Site.cart-checkOut.checkout');
     }
 
@@ -60,7 +66,7 @@ class CheckoutController extends Controller
             $paymentMethod = $request->input('paymentMethod');
 
             $amount = 0;
-            $pay_amount = session('cartTotal' . auth::id())->total_price;
+            $pay_amount = session('cartTotal' . auth::id());
             foreach (session('cart' . auth::id()) as $item) {
                 $amount += $item->quantity;
             }
@@ -76,6 +82,7 @@ class CheckoutController extends Controller
                     'pay_amount' => $pay_amount,
                     'zip' => $request->zip,
                     'phone' => $request->phone,
+                    'email' => $request->email,
                     'ship_address1' => $request->ship_address1,
                     'ship_address2' => $request->ship_address2,
                     'customer_notes' => $request->customer_notes
@@ -99,15 +106,14 @@ class CheckoutController extends Controller
             session()->forget('cart' . Auth::id());
             session()->forget('cartTotal' . Auth::id());
 
-            return redirect()->route('OrderConfirmation',['id' => $orders->id]);
+            return redirect()->route('OrderConfirmation',['id' => $orders->id])->with('success', 'Đặt đơn hàng thành công! Đơn hàng đang chờ xử lý');
         } catch (\Throwable $error) {
             dd($error);
         }
     }
 
     public function OrderConfirmation(string $id) {
-        dd($id);
-        $order = Orders::where('id', $id);
-        return view('Site.cart-checkOut.OrderConfirmation');
+        $order = Orders::where('id', $id)->first();
+        return view('Site.cart-checkOut.OrderConfirmation', compact('order'));
     }
 }

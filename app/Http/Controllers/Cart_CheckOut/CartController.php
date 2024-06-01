@@ -9,6 +9,7 @@ use App\Models\Cart_Checkout\CartItem;
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -39,16 +40,16 @@ class CartController extends Controller
             $cartItem = CartItem::where('cart_id', $cart->id)
                 ->where('product_id', $id)
                 ->first();
+            if ($product->sale_price > 0) {
+                $priceProduct = $product->sale_price;
+            } else {
+                $priceProduct = $product->price;
+            }
             if ($cartItem) {
                 $cartItem->quantity += 1;
-                $cartItem->total_price = $cartItem->quantity * $cartItem->price;
+                $cartItem->total_price = $cartItem->quantity * $priceProduct;
                 $cartItem->save();
             } else {
-                if ($product->sale_price > 0) {
-                    $priceProduct = $product->sale_price;
-                } else {
-                    $priceProduct = $product->price;
-                }
                 CartItem::create([
                     'cart_id' => $cart->id,
                     'product_id' => $id,
@@ -61,12 +62,13 @@ class CartController extends Controller
 
             $cartItems = CartItem::where('cart_id', $cart->id)->get();
 
+            $cartTotal = 0;
             foreach ($cartItems as $item) {
-                $cart->total_price += $item->total_price;
-            };
+                $cartTotal += $item->total_price;
+            }
 
             session()->put('cart' . Auth::id(), $cartItems);
-            session()->put('cartTotal' . Auth::id(), $cart);
+            session()->put('cartTotal' . Auth::id(), $cartTotal);
             return redirect()->back()->with('success', 'Sản phẩm đã được thêm vào giỏ hàng thành công!');
         } catch (\Throwable $error) {
             return redirect()->back()->with('error', 'Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.');
@@ -96,22 +98,48 @@ class CartController extends Controller
 
         return redirect()->back();
     }
-
-    public function updateQuantity(Request $request)
+    public function updateCart(Request $request)
     {
-        dd($request->all());
-        $itemId = $request->input('item_id');
-        $newQuantity = $request->input('new_quantity');
+        $user = Auth::user();
+        // Kiểm tra xem giỏ hàng đã tồn tại hay chưa
+        $cart = Cart::where('user_id', $user->id)->first();
+        $itemId = $request->input('id');
+        $index = $request->input('index');
+        $quantity = $request->input('quantity');
 
-        // Update session
-        $cart = session()->get('cart' . Auth::id());
-        $cart[$itemId]->quantity = $newQuantity;
-        session()->put('cart' . Auth::id(), $cart);
+        // Truy vấn dữ liệu hiện tại của mục giỏ hàng
+        $cartItem = CartItem::where('id', $itemId)->first();
+        $product = Product::where('id', $cartItem->product->id)->first();
 
-        // Update database
-        CartItem::where('id', $itemId)
-            ->update(['quantity' => $newQuantity]);
+        if ($cartItem) {
+            if ($product->sale_price > 0) {
+                $priceProduct = $product->sale_price;
+            } else {
+                $priceProduct = $product->price;
+            }
+            // Cập nhật thông tin mới
+            $cartItem->quantity = $quantity;
+            $cartItem->total_price = $quantity * $priceProduct; // Giả sử giá sản phẩm lấy từ mối quan hệ
 
-        return redirect()->back();
+            // Lưu thay đổi vào cơ sở dữ liệu
+            $cartItem->save();
+
+            // Cập nhật session
+            $cart = session()->get('cart' . Auth::id(), []);
+
+            if (isset($cart[$index])) {
+                $cart[$index]['quantity'] = $quantity;
+                $cart[$index]['total_price'] = $cartItem->total_price;
+                session()->put('cart' . Auth::id(), $cart);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Cập nhật mục giỏ hàng thành công.',
+                'total_price' => $cartItem->total_price // Trả về tổng giá trị đã cập nhật
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Không tìm thấy mục giỏ hàng.']);
     }
 }

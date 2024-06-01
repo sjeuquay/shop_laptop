@@ -5152,3 +5152,16 @@ ol, ul {
 	background: #fff;
 	z-index: 1;
 }
+
+.title-customer{
+	position: relative;
+}
+.title-customer::after{
+	content: "";
+	width: 140px;
+	height: 3px;
+	background-color: var(--primary-color);
+	bottom: -20%;
+	left: 0;
+	position: absolute;
+}

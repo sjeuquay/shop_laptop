@@ -15,6 +15,9 @@ abstract class Controller
         View::composer('Site.header', function ($view) {
             $category = Category::take(4)->get();
             $view->with('category', $category);
+            // session()->forget('cart'.auth::id())
+            $cart = session()->get('cart' . Auth::id(), []);
+            // dd($cart);
         });
     }
 }
