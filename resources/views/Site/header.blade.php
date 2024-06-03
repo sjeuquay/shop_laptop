@@ -68,7 +68,7 @@
                      <!--/ End Search Form -->
                      <div class="mobile-nav"></div>
                  </div>
-                 <div class="col-lg-8 col-md-7 col-12">
+                 <div class="col-lg-7 col-md-7 col-12">
                      <div class="search-bar-top">
                          <div class="search-bar">
                              <form class="w-100" action="{{ route('search') }}" method="GET">
@@ -79,25 +79,12 @@
                          </div>
                      </div>
                  </div>
-                 <div class="col-lg-2 col-md-3 col-12">
+                 <div class="col-lg-3 col-md-3 col-12">
                      <div class="right-bar">
                          <!-- Search Form -->
                          <div class="sinlge-bar">
                              <a href="#" class="single-icon"><i class="bi bi-heart"></i></a>
                          </div>
-                         @if (auth()->check())
-                             <div class="sinlge-bar dropdown overlay-account">
-                                 <a href="#" class="single-icon"><i class="bi bi-person-circle"></i></a>
-                                 <ul class="dropdown-menu">
-                                     <li><a style="background-color: transparent" class="dropdown-item"
-                                             href="#">Thông tin tài khoản</a></li>
-                                     <li><a style="background-color: transparent" class="dropdown-item"
-                                             href="#">Lịch sử mua hàng</a></li>
-                                     <li><a style="background-color: transparent" class="dropdown-item"
-                                             href="{{ route('logout') }}">Đăng xuất</a></li>
-                                 </ul>
-                             </div>
-                         @endif
                          <div class="sinlge-bar shopping">
                              <a href="{{ route('cart') }}" class="single-icon"><i class="bi bi-bag"></i> <span
                                      class="total-count">
@@ -176,6 +163,20 @@
                              </div>
                              <!--/ End Shopping Item -->
                          </div>
+                         @if (auth()->check())
+                             <div class="sinlge-bar dropdown overlay-account">
+                                 <a href="#" class="single-icon"><i class="bi bi-person-circle"></i></a>
+                                 <span class="name-user">{{auth()->user()->name}}<i class="bi bi-chevron-down mx-1" style="font-size:10px;"></i></span>
+                                 <ul class="dropdown-menu">
+                                     <li><a style="background-color: transparent" class="dropdown-item"
+                                             href="#">Thông tin tài khoản</a></li>
+                                     <li><a style="background-color: transparent" class="dropdown-item"
+                                             href="#">Lịch sử mua hàng</a></li>
+                                     <li><a style="background-color: transparent" class="dropdown-item"
+                                             href="{{ route('logout') }}">Đăng xuất</a></li>
+                                 </ul>
+                             </div>
+                         @endif
                      </div>
                  </div>
              </div>

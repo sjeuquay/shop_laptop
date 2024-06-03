@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Cart_CheckOut\CartController;
@@ -44,3 +45,9 @@ Route::post('/checkout', [CheckoutController::class, 'postCheckout'])->name('pos
 Route::get('/orderconfirmation/{id?}', [CheckoutController::class, 'OrderConfirmation'])->name('OrderConfirmation');
 
 Route::post('/product/{id?}', [ProductController::class, 'customer'])->name('customer');
+
+
+Route::group(['middleware' => 'admin'], function() {
+    Route::get('/admin', [AdminController::class, 'admin'])->name('adminDashboard');
+    Route::get('/admin/product-list', [AdminController::class, 'productList'])->name('productList');
+});

@@ -5021,7 +5021,7 @@ ol, ul {
     position: absolute;
     top: 100%; /* Hiển thị dropdown dưới button */
     left: 0;
-	transform: translateX(-45%);
+	/* transform: translateX(-45%); */
     z-index: 1000; /* Đảm bảo dropdown hiển thị trên các phần tử khác */
 }
 
@@ -5164,4 +5164,9 @@ ol, ul {
 	bottom: -20%;
 	left: 0;
 	position: absolute;
+}
+
+.name-user:hover {
+	color: var(--primary-color);
+	transition: 600ms;
 }

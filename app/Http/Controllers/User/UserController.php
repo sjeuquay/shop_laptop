@@ -79,7 +79,7 @@ class UserController extends Controller
             return redirect()->route('login')->withErrors(['user_name' => 'Tài khoản không tồn tại'])->withInput($request->only('user_name'));
         } else {
             if (Auth::attempt(['user_name' => $request->user_name, 'password' => $request->password])) {
-                if (Auth::user()->role_id == '1') {
+                if (Auth::user()->role == '1') {
                     $cart = Cart::where('user_id', $user->id)->first();
                     $cartItems = [];
                     if($cart) {
@@ -89,7 +89,7 @@ class UserController extends Controller
                     return redirect()->route('home');
                 } else {
                     // admin dashboard
-                    dd('dashboard');
+                    return redirect()->route('adminDashboard');
                 }
             } else {
                 return redirect()->route('login')->withErrors(['password' => 'Mật khẩu không chính xác.'])->withInput($request->only('user_name'));
