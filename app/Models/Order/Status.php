@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Order;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Status extends Model
 {
     use HasFactory;
-    protected $table = 'category';
+    protected $table = 'status';
     public $timestamps = false;
     protected $fillable = [
+        'id',
         'name',
-        'hidden',
-        'orderBy',
     ];
 }

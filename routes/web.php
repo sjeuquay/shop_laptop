@@ -47,7 +47,18 @@ Route::get('/orderconfirmation/{id?}', [CheckoutController::class, 'OrderConfirm
 Route::post('/product/{id?}', [ProductController::class, 'customer'])->name('customer');
 
 
-Route::group(['middleware' => 'admin'], function() {
-    Route::get('/admin', [AdminController::class, 'admin'])->name('adminDashboard');
-    Route::get('/admin/product-list', [AdminController::class, 'productList'])->name('productList');
+Route::group(['prefix' => 'admin'], function() {
+    Route::get('/', [AdminController::class, 'admin'])->name('adminDashboard');
+    Route::fallback(function () {
+        return redirect()->route('adminDashboard');
+    });    
+
+    Route::get('product-list', [AdminController::class, 'productList'])->name('productList');
+    Route::get('product-add', [AdminController::class, 'productAdd'])->name('productAdd');
+
+    Route::get('category-list', [AdminController::class, 'CategoryList'])->name('CategoryList');
+
+    Route::get('user-list', [AdminController::class, 'userList'])->name('userList');
+
+    Route::get('order-list', [AdminController::class, 'ordersList'])->name('ordersList');
 });

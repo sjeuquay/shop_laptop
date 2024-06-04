@@ -22,10 +22,12 @@ return new class extends Migration
             $table->integer('pay_amount');
             $table->string('zip', 6);
             $table->string('phone', 10);
+            $table->string('name', 50);
             $table->string('email');
             $table->string('ship_address1', 150);
             $table->string('ship_address2', 150)->nullable();
             $table->string('customer_notes', 255)->nullable();
+            $table->dateTime('date_created')->useCurrent();
             $table->dateTime('date_delivery')->useCurrent();
         });
     }

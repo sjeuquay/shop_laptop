@@ -44,7 +44,7 @@
                                             </a>
                                             <ul role="menu"
                                                 class="dropdown-header-top author-log dropdown-menu animated zoomIn">
-                                                <li><a href="">
+                                                <li><a href="{{ route('logout') }}">
                                                         <i class="bi bi-power"></i> Log
                                                         Out</a>
                                                 </li>

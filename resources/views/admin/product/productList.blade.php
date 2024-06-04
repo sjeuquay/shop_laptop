@@ -8,13 +8,14 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
-                            <h4>Products List</h4>
+                            <h4>Danh sách sản phẩm</h4>
                             <div class="add-product">
-                                <a href="">Add Product</a>
+                                <a href="{{route('productAdd')}}">Thêm sản phẩm</a>
                             </div>
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th>Ảnh</th>
                                         <th>Tên</th>
                                         <th>Trạng thái</th>
@@ -26,9 +27,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (count($products))
+                                    @if (!empty($products))
                                         @foreach ($products as $product)
                                             <tr>
+                                                <td>{{ $product->id }}</td>
                                                 <td><img src="{{ asset('images/product/' . $product->image) }}"
                                                         alt="" /></td>
                                                 <td>{{ $product->name }}</td>
@@ -78,21 +80,23 @@
                                     </li>
                                 </ul>
                             </div> --}}
-
-                            <nav aria-label="Page navigation example" style="width:100%">
-                                <ul class="pagination pagi-list">
-                                    <li class="page-item"><a class="page-link"
-                                            href="{{ $products->previousPageUrl() }}">Previous</a></li>
-                                    @for ($i = 1; $i <= $products->lastPage(); $i++)
-                                        <li class="page-item {{ $products->currentPage() == $i ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
+                            @if (!empty($products))
+                                <nav aria-label="Page navigation example"
+                                    style="width:100%;display:flex;justify-content:center;">
+                                    <ul class="pagination pagi-list">
+                                        <li class="page-item"><a class="page-link"
+                                                href="{{ $products->previousPageUrl() }}">Previous</a></li>
+                                        @for ($i = 1; $i <= $products->lastPage(); $i++)
+                                            <li class="page-item {{ $products->currentPage() == $i ? 'active' : '' }}">
+                                                <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
+                                            </li>
+                                        @endfor
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a>
                                         </li>
-                                    @endfor
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                                    </ul>
+                                </nav>
+                            @endif
                         </div>
                     </div>
                 </div>

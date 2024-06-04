@@ -3257,7 +3257,7 @@ ul.mailbox-list li:hover a, ul.h-list li:hover a {
 }
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
     /* background-color: green; */
-    border: transparent;
+    border: none !important;
 }
 .fixed-table-pagination {
     padding: 0px 10px;
@@ -3670,8 +3670,5 @@ th.fc-day-header.fc-widget-header {
 
 .pagi-list>li>a, .pagi-list>li>span {
     background-color: transparent;
-}
-
-.pagi.active {
-    background-color: green !important;
+    border: none;
 }

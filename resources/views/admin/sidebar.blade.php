@@ -33,16 +33,16 @@
                         <ul class="submenu-angle" aria-expanded="false">
                             <li><a title="Inbox" href="{{route('productList')}}"><span class="mini-sub-pro">Danh sách sản
                                         phẩm</span></a></li>
-                            <li><a title="View Mail" href="mailbox-view.html"><span class="mini-sub-pro">Danh mục sản
+                            <li><a title="View Mail" href="{{route('CategoryList')}}"><span class="mini-sub-pro">Danh mục sản
                                         phẩm</span></a></li>
                         </ul>
                     </li>
                     <li>
-                        <a class="has-arrow" href="mailbox.html" aria-expanded="false"><i class="bi bi-people"></i>
+                        <a class="has-arrow" href="{{route('userList')}}" aria-expanded="false"><i class="bi bi-people"></i>
                             <span class="mini-click-non">Người dùng</span></a>
                         <ul class="submenu-angle" aria-expanded="false">
-                            <li><a title="Google Map" href="google-map.html"><span class="mini-sub-pro">Danh sách người dùng</span></a></li>
-                            <li><a title="Data Maps" href="data-maps.html"><span class="mini-sub-pro">Danh sách đơn hàng</span></a></li>
+                            <li><a title="Google Map" href="{{route('userList')}}"><span class="mini-sub-pro">Danh sách người dùng</span></a></li>
+                            <li><a title="Data Maps" href="{{route('ordersList')}}"><span class="mini-sub-pro">Danh sách đơn hàng</span></a></li>
                         </ul>
                     </li>
                 </ul>
