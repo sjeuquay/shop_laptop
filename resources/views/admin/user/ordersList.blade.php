@@ -51,10 +51,19 @@
                                                 <td>{{ \Carbon\Carbon::parse($order->date_update)->format('d/m/Y - H:i:s') }}
                                                 </td>
                                                 <td>
-                                                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i
-                                                            class="bi bi-pencil-square"></i></button>
-                                                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i
-                                                            class="bi bi-trash"></i></button>
+                                                    <div class="" style="display: flex">
+                                                        <button class="pd-setting-ed btn btn-dark text-white">
+                                                            <a href="{{ route('orderEdit', ['id' => $order->id]) }}">
+                                                                <i class="bi bi-pencil-square" style="color: #fff;"></i>
+                                                            </a>
+                                                        </button>
+                                                        <form action="{{ route('deleteOrder', ['id' => $order->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="pd-setting-ed"><i
+                                                                    class="bi bi-trash"></i></button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -5,12 +5,17 @@
     <div class="" style="margin-top: 10px;">
         <div class="product-status mg-b-30">
             <div class="container-fluid">
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
                             <h4>Danh mục sản phẩm</h4>
                             <div class="add-product">
-                                <a href="">Thêm danh mục</a>
+                                <a href="{{ route('CategoryAdd') }}">Thêm danh mục</a>
                             </div>
                             <table>
                                 <thead>
@@ -35,30 +40,26 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i
-                                                            class="bi bi-pencil-square"></i></button>
-                                                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i
-                                                            class="bi bi-trash"></i></button>
+                                                    <div class="" style="display: flex">
+                                                        <button class="pd-setting-ed btn btn-dark text-white">
+                                                            <a href="{{ route('categoryEdit', ['id' => $category->id]) }}">
+                                                                <i class="bi bi-pencil-square" style="color: #fff;"></i>
+                                                            </a>
+                                                        </button>
+                                                        <form
+                                                            action="{{ route('deleteCategory', ['id' => $category->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <button type="submit" data-toggle="tooltip" title="Trash"
+                                                                class="pd-setting-ed"><i class="bi bi-trash"></i></button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     @endif
                                 </tbody>
                             </table>
-                            {{-- <div class="custom-pagination">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link"
-                                            href="{{ $category->previousPageUrl() }}">Previous</a></li>
-                                    @for ($i = 1; $i <= $category->lastPage(); $i++)
-                                        <li class="page-item {{ $category->currentPage() == $i ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $category->url($i) }}">{{ $i }}</a>
-                                        </li>
-                                    @endfor
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $category->nextPageUrl() }}">Next</a>
-                                    </li>
-                                </ul>
-                            </div> --}}
                             @if (!empty($categorys))
 
                                 <nav aria-label="Page navigation example"

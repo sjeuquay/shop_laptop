@@ -16,9 +16,9 @@ class Product extends Model
     public $timestamps = false;
     protected $fillable = [
         'id',
+        'category_id',
         'name',
         'is_stock',
-        'short_description',
         'description',
         'quantity_available',
         'price',
@@ -33,7 +33,7 @@ class Product extends Model
         return $this->hasMany(Orders::class, 'product_id');
     }
     public function specification() {
-        return $this->hasMany(Specifications::class, 'product_id');
+        return $this->hasOne(Specifications::class, 'product_id');
     }
     public function category() {
         return $this->belongsTo(Category::class);

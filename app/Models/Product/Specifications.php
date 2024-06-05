@@ -12,14 +12,13 @@ class Specifications extends Model
     protected $table = 'specifications';
     public $timestamps = false;
     protected $fillable = [
-        'content',
-        'company',
-        'type',
+        'OS',
+        'product_id',
+        'hard_disk',
         'ram',
-        'Capacity',
+        'capacity',
         'screen_size',
         'card_screen',
-        'product_id',
     ];
 
     public function product() {

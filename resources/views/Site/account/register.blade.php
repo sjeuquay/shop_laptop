@@ -39,6 +39,14 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="d-flex flex-column my-2">
+                <label for="">Xác nhận mật khẩu</label>
+                <input class="form-control @error('re-password') is-invalid @enderror" type="password" name="re-password"
+                    id="" value="{{ old('re-password') }}">
+                @error('re-password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
             <div class="text-center mt-4">
                 <button class="text-center btn btn-outline-dark" type="submit">Tạo tài khoản</button>
             </div>

@@ -76,7 +76,7 @@ class ProductController extends Controller
         try {
             $product = Product::findOrFail($id);
             $specifications = Specifications::where('product_id', $product->id)->first();
-            $thumbnail = Thumnail::where('product_id', $product->id)->get();
+            // $thumbnail = Thumnail::where('product_id', $product->id)->get();
             $similar = Product::where('category_id', $product->category_id)
                 ->where('id', '!=', $product->id)
                 ->limit(10)
@@ -86,7 +86,7 @@ class ProductController extends Controller
                                 ->paginate(5);
         } catch (\Throwable) {
         }
-        return view('Site.Product.product', compact('customer','product', 'similar', 'thumbnail', 'specifications'));
+        return view('Site.Product.product', compact('customer','product', 'similar', 'specifications'));
     }
 
     public function search(Request $request)

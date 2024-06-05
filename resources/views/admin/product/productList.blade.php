@@ -5,12 +5,17 @@
     <div class="" style="margin-top: 10px;">
         <div class="product-status mg-b-30">
             <div class="container-fluid">
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="product-status-wrap">
                             <h4>Danh sách sản phẩm</h4>
                             <div class="add-product">
-                                <a href="{{route('productAdd')}}">Thêm sản phẩm</a>
+                                <a href="{{ route('productAdd') }}">Thêm sản phẩm</a>
                             </div>
                             <table>
                                 <thead>
@@ -56,30 +61,26 @@
                                                 </td>
                                                 <td>{{ number_format($product->price) }}₫</td>
                                                 <td>
-                                                    <button data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i
-                                                            class="bi bi-pencil-square"></i></button>
-                                                    <button data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i
-                                                            class="bi bi-trash"></i></button>
+                                                    <div class="" style="display: flex">
+                                                        <button class="pd-setting-ed btn btn-dark text-white" >
+                                                            <a href="{{ route('productEdit', ['id' => $product->id]) }}">
+                                                                <i class="bi bi-pencil-square" style="color: #fff;"></i>
+                                                            </a>
+                                                        </button>
+                                                        <form action="{{ route('deleteProduct', ['id' => $product->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="pd-setting-ed"><i
+                                                                    class="bi bi-trash"></i></button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     @endif
                                 </tbody>
                             </table>
-                            {{-- <div class="custom-pagination">
-                                <ul class="pagination">
-                                    <li class="page-item"><a class="page-link"
-                                            href="{{ $products->previousPageUrl() }}">Previous</a></li>
-                                    @for ($i = 1; $i <= $products->lastPage(); $i++)
-                                        <li class="page-item {{ $products->currentPage() == $i ? 'active' : '' }}">
-                                            <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
-                                        </li>
-                                    @endfor
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a>
-                                    </li>
-                                </ul>
-                            </div> --}}
                             @if (!empty($products))
                                 <nav aria-label="Page navigation example"
                                     style="width:100%;display:flex;justify-content:center;">
@@ -88,7 +89,8 @@
                                                 href="{{ $products->previousPageUrl() }}">Previous</a></li>
                                         @for ($i = 1; $i <= $products->lastPage(); $i++)
                                             <li class="page-item {{ $products->currentPage() == $i ? 'active' : '' }}">
-                                                <a class="page-link" href="{{ $products->url($i) }}">{{ $i }}</a>
+                                                <a class="page-link"
+                                                    href="{{ $products->url($i) }}">{{ $i }}</a>
                                             </li>
                                         @endfor
                                         <li class="page-item">

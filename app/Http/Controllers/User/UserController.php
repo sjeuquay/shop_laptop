@@ -35,7 +35,8 @@ class UserController extends Controller
                     'required',
                     'between:8,20',
                     'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
-                ]
+                ],
+                're-password' => 'required|same:password'
             ],
             [
                 'user_name.required' => 'Vui lòng nhập tài khoản.',
@@ -45,10 +46,13 @@ class UserController extends Controller
                 'email.regex' => 'Địa chỉ email không hợp lệ.',
                 'password.required' => 'Vui lòng nhập mật khẩu.',
                 'password.between' => 'Mật khẩu phải có từ 8 đến 20 ký tự.',
-                'password.regex' => 'Mật khẩu phải chứa ít nhất một chữ cái viết thường, một chữ cái viết hoa và một số.'
+                'password.regex' => 'Mật khẩu phải chứa ít nhất một chữ cái viết thường, một chữ cái viết hoa và một số.',
+                're-password.required' => 'Vui lòng nhập mật khẩu xác nhận.',
+                're-password.same' => 'Mật khẩu xác nhận không khớp.'
             ]
         );
         try {
+            $request->merge(['img' => '128x128.png']);
             $request->merge(['password'=>Hash::make($request->password)]);
     
             User::create($request->all());
@@ -85,9 +89,19 @@ class UserController extends Controller
                     if($cart) {
                         $cartItems = CartItem::where('cart_id', $cart->id)->get();
                     }
+                    $user = User::find(Auth::id());
+                    if($user) {
+                        $user->is_active = 1;
+                        $user->save();
+                    }
                     session()->put('cart'. Auth::id(), $cartItems);
                     return redirect()->route('home');
                 } else {
+                    $user = User::find(Auth::id());
+                    if($user) {
+                        $user->is_active = 1;
+                        $user->save();
+                    }
                     // admin dashboard
                     return redirect()->route('adminDashboard');
                 }
@@ -102,6 +116,11 @@ class UserController extends Controller
     }
 
     public function logout(Request $request) {
+        $user = User::find(Auth::id());
+        if($user) {
+            $user->is_active = 0;
+            $user->save();
+        }
         Auth::logout();
         $request->session()->flush();
         return redirect()->route('home');

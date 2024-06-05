@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('specifications', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->string('content', 200);
-            $table->integer('company_id');
-            $table->foreign('company_id')->references('id')->on('company')->onDelete('cascade');
+            $table->string('OS', 200);
             $table->integer('product_id');
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
-            $table->string('type', 50);
-            $table->string('ram', 30);
-            $table->string('capacity', 50);
-            $table->string('screen_size', 20);
-            $table->string('card_screen', 100);
+            $table->string('hard_disk', 150);
+            $table->string('ram', 100);
+            $table->string('capacity', 100);
+            $table->string('screen_size', 255);
+            $table->string('card_screen', 255);
         });
     }
 

@@ -83,6 +83,7 @@ class CheckoutController extends Controller
                     'zip' => $request->zip,
                     'phone' => $request->phone,
                     'email' => $request->email,
+                    'name' => $request->name,
                     'ship_address1' => $request->ship_address1,
                     'ship_address2' => $request->ship_address2,
                     'customer_notes' => $request->customer_notes

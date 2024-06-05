@@ -1,5 +1,5 @@
 @extends('admin.layout')
-@section('title', 'Thêm sản phẩm')
+@section('title', 'Sửa sản phẩm')
 @section('admin')
     <div class="single-product-tab-area mg-b-30" style="margin-top: 10px;">
         <!-- Single pro tab review Start-->
@@ -16,7 +16,8 @@
                                 <li><a href="#INFORMATION"><i class="bi bi-gear"></i> Thông số kỹ thuật</a>
                                 </li>
                             </ul>
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('postProductEdit', ['id' => $product->id]) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div id="myTabContent" class="tab-content custom-product-edit">
                                     <div class="product-tab-list tab-pane fade active in" id="description">
@@ -27,7 +28,7 @@
                                                         <span class="input-group-addon"><i class="bi bi-pencil"></i></span>
                                                         <input name="name" type="text"
                                                             class="form-control @error('name') is-invalid @enderror"
-                                                            placeholder="Tên sản phẩm">
+                                                            placeholder="Tên sản phẩm" value="{{ $product->name }}">
                                                     </div>
                                                     @error('name')
                                                         <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
@@ -39,7 +40,7 @@
                                                                 class="bi bi-body-text"></i></span>
                                                         <input type="text" name="description"
                                                             class="form-control @error('description') is-invalid @enderror"
-                                                            placeholder="Mô tả">
+                                                            placeholder="Mô tả" value="{{ $product->description }}">
                                                     </div>
                                                     @error('description')
                                                         <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
@@ -76,7 +77,7 @@
                                                                 class="bi bi-currency-dollar"></i></span>
                                                         <input name="price" type="text"
                                                             class="form-control @error('price') is-invalid @enderror"
-                                                            placeholder="Giá">
+                                                            placeholder="Giá" value="{{ $product->price }}">
                                                     </div>
                                                     @error('price')
                                                         <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
@@ -88,7 +89,8 @@
                                                                 class="bi bi-box-seam"></i></span>
                                                         <input name="quantity_available" type="text"
                                                             class="form-control @error('quantity_available') is-invalid @enderror"
-                                                            placeholder="Số lượng tồn kho">
+                                                            placeholder="Số lượng tồn kho"
+                                                            value="{{ $product->quantity_available }}">
                                                     </div>
                                                     @error('quantity_available')
                                                         <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
@@ -116,7 +118,7 @@
                                                                 class="bi bi-bookmark"></i></span>
                                                         <input name="sale_price" type="text"
                                                             class="form-control @error('sale_price') is-invalid @enderror"
-                                                            placeholder="Giá giảm">
+                                                            placeholder="Giá giảm" value="{{ $category->sale_price }}">
                                                     </div>
                                                     @error('sale_price')
                                                         <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
@@ -130,7 +132,7 @@
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="text-center custom-pro-edt-ds">
                                                     <button type="submit"
-                                                        class="btn btn-ctl-bt waves-effect waves-light m-r-10">Thêm
+                                                        class="btn btn-ctl-bt waves-effect waves-light m-r-10">Thay đổi
                                                     </button>
                                                     <a href="{{ route('productList') }}"
                                                         class="btn btn-ctl-bt waves-effect waves-light">Hủy
@@ -146,7 +148,7 @@
                                                     <div class="row">
                                                         <div class="col-lg-4">
                                                             <div class="pro-edt-img">
-                                                                <img src="{{ asset('images/product/5-small.jpg') }}"
+                                                                <img src="{{ isset($product->image) ? asset('images/product/' . $product->image) : asset('images/product/5-small.jpg') }}"
                                                                     alt="" id="preview-img-main" />
                                                                 <input type="file" id="file-input-main" name="image"
                                                                     style="display:none;">
@@ -189,89 +191,103 @@
                                         </div>
                                     </div>
                                     <div class="product-tab-list tab-pane fade" id="INFORMATION">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                <div class="review-content-section">
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i class="bi bi-hdd"></i></span>
-                                                        <input type="text"
-                                                            class="form-control @error('hard_disk') is-invalid @enderror"
-                                                            name="hard_disk" placeholder="Ổ cứng">
-                                                    </div>
-                                                    @error('hard_disk')
-                                                        <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
-                                                            {{ $message }}
+                                        @if ($product->specification)
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i
+                                                                    class="bi bi-hdd"></i></span>
+                                                            <input type="text"
+                                                                class="form-control @error('hard_disk') is-invalid @enderror"
+                                                                name="hard_disk" placeholder="Ổ cứng"
+                                                                value="{{ $product->specification->hard_disk }}">
                                                         </div>
-                                                    @enderror
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i
-                                                                class="bi bi-windows"></i></span>
-                                                        <input type="text" 
-                                                            class="form-control @error('OS') is-invalid @enderror"
-                                                            name="OS" placeholder="Hệ điều hành">
-                                                    </div>
-                                                    @error('OS')
-                                                        <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
-                                                            {{ $message }}
+                                                        @error('hard_disk')
+                                                            <div class="invalid-feedback"
+                                                                style="color: red;margin-bottom:10px;">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i
+                                                                    class="bi bi-windows"></i></span>
+                                                            <input type="text"
+                                                                class="form-control @error('OS') is-invalid @enderror"
+                                                                name="OS" placeholder="Hệ điều hành"
+                                                                value="{{ $product->specification->OS }}">
                                                         </div>
-                                                    @enderror
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i
-                                                                class="bi bi-memory"></i></span>
-                                                        <input type="text"
-                                                            class="form-control @error('ram') is-invalid @enderror"
-                                                            name="ram" placeholder="Ram">
-                                                    </div>
-                                                    @error('ram')
-                                                        <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
-                                                            {{ $message }}
+                                                        @error('OS')
+                                                            <div class="invalid-feedback"
+                                                                style="color: red;margin-bottom:10px;">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i
+                                                                    class="bi bi-memory"></i></span>
+                                                            <input type="text"
+                                                                class="form-control @error('ram') is-invalid @enderror"
+                                                                name="ram" placeholder="Ram"
+                                                                value="{{ $product->specification->ram }}">
                                                         </div>
-                                                    @enderror
+                                                        @error('ram')
+                                                            <div class="invalid-feedback"
+                                                                style="color: red;margin-bottom:10px;">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="review-content-section">
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i
+                                                                    class="bi bi-fullscreen"></i></span>
+                                                            <input type="text"
+                                                                class="form-control @error('capacity') is-invalid @enderror"
+                                                                name="capacity" placeholder="Dung lượng"
+                                                                value="{{ $product->specification->capacity }}">
+                                                        </div>
+                                                        @error('capacity')
+                                                            <div class="invalid-feedback"
+                                                                style="color: red;margin-bottom:10px;">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i
+                                                                    class="bi bi-aspect-ratio"></i></span>
+                                                            <input type="text"
+                                                                class="form-control @error('screen_size') is-invalid @enderror"
+                                                                name="screen_size" placeholder="Kích thước màn hình"
+                                                                value="{{ $product->specification->screen_size }}">
+                                                        </div>
+                                                        @error('screen_size')
+                                                            <div class="invalid-feedback"
+                                                                style="color: red;margin-bottom:10px;">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                        <div class="input-group mg-b-pro-edt">
+                                                            <span class="input-group-addon"><i
+                                                                    class="bi bi-gpu-card"></i></span>
+                                                            <input type="text"
+                                                                class="form-control @error('card_screen') is-invalid @enderror"
+                                                                name="card_screen" placeholder="Card màn hình"
+                                                                value="{{ $product->specification->card_screen }}">
+                                                        </div>
+                                                        @error('card_screen')
+                                                            <div class="invalid-feedback"
+                                                                style="color: red;margin-bottom:10px;">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                                <div class="review-content-section">
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i
-                                                                class="bi bi-fullscreen"></i></span>
-                                                        <input type="text"
-                                                            class="form-control @error('capacity') is-invalid @enderror"
-                                                            name="capacity" placeholder="Dung lượng">
-                                                    </div>
-                                                    @error('capacity')
-                                                        <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i
-                                                                class="bi bi-aspect-ratio"></i></span>
-                                                        <input type="text"
-                                                            class="form-control @error('screen_size') is-invalid @enderror"
-                                                            name="screen_size" placeholder="Kích thước màn hình">
-                                                    </div>
-                                                    @error('screen_size')
-                                                        <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                    <div class="input-group mg-b-pro-edt">
-                                                        <span class="input-group-addon"><i
-                                                                class="bi bi-gpu-card"></i></span>
-                                                        <input type="text"
-                                                            class="form-control @error('card_screen') is-invalid @enderror"
-                                                            name="card_screen" placeholder="Card màn hình">
-                                                    </div>
-                                                    @error('card_screen')
-                                                        <div class="invalid-feedback" style="color: red;margin-bottom:10px;">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endif
                                     </div>
-
                                 </div>
                             </form>
                         </div>

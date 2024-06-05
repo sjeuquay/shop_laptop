@@ -21,6 +21,7 @@ class Orders extends Model
         'zip',
         'phone',
         'email',
+        'name',
         'ship_address1',
         'ship_address2',
         'customer_notes',

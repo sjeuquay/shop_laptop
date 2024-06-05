@@ -24,7 +24,7 @@
                                 </a>
                             </div>
 
-                            @if (!empty($thumbnail))
+                            {{-- @if (!empty($thumbnail))
                                 <div class="thumbnail-container">
                                     <ul class="px-0">
                                         <li class="thumbnail-items">
@@ -47,7 +47,7 @@
                                         </ul>
                                     @endforeach
                                 </div>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7">
@@ -77,10 +77,6 @@
                                         </span>
                                     @endif
                                 </div>
-                                <div class="product_desc">
-                                    <p>{{ $product->short_description }} </p>
-                                </div>
-
                                 <div class="product_variant color">
                                     <h3>Bảo hành 1 năm kể từ ngày mua</h3>
                                 </div>
@@ -140,12 +136,12 @@
                                                 <tbody>
                                                     @if (isset($specifications))
                                                         <tr>
-                                                            <td class="first_child">Hãng</td>
-                                                            <td>{{ $specifications->company }}</td>
+                                                            <td class="first_child">Hệ điều hành</td>
+                                                            <td>{{ $specifications->OS }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="first_child">Dòng máy</td>
-                                                            <td>{{ $specifications->type }}</td>
+                                                            <td class="first_child">Ổ cứng</td>
+                                                            <td>{{ $specifications->hard_disk }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="first_child">Ram</td>

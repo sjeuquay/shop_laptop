@@ -15,7 +15,6 @@ return new class extends Migration
             $table->integer('id')->autoIncrement();
             $table->string('name', 200);
             $table->string('description', 200);
-            $table->string('short_description', 200);
             $table->tinyInteger('is_stock')->default(1);
             $table->integer('hot');
             $table->integer('price');
