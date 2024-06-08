@@ -68,23 +68,23 @@ class DatabaseSeeder extends Seeder
             '15 eg2082TU'
         ];
         $hinh_arr = [
-            'https://cdn.tgdd.vn/Products/Images/44/270031/asus-rog-strix-gaming-g513ih-r7-hn015w-2-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/263980/Slider/vi-vn-acer-nitro-5-gaming-an515-45-r6ev-r5-nhqbmsv006-4.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/302226/lenovo-ideapad-gaming-3-15ihu6-i5-82k101f3vn-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/302486/hp-victus-15-fa0111tx-i5-7c0r4pa-glr-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/264354/dell-gaming-g15-5511-i5-70266676-1-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/282828/apple-macbook-pro-13-inch-m2-2022-231122-041529.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/302951/masstel-e140-n4120-glr-2.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/302950/masstel-e116-n4020-glr-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/306795/lg-gram-2023-i7-17z90rgah78a5-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/270142/chuwi-corebook-x-i5-8259u-1-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/270141/chuwi-larkbook-x-n5100-2-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/265523/itel-able-1s-n4020-71006300027-1-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/300000/itel-spirit-2-i5-71006300202-3.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/270031/asus-rog-strix-gaming-g513ih-r7-hn015w-2-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/281483/asus-vivobook-15-x1502za-i5-ej120w-1-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/284258/asus-zenbook-14-oled-ux3402za-i5-km218w-a-1.jpg',
-            'https://cdn.tgdd.vn/Products/Images/44/302533/hp-pavilion-15-eg2082tu-i5-7c0q5pa-1.jpg'
+            'laptop.jpg',
+            'laptop1.jpg',
+            'laptop2.jpg',
+            'laptop3.jpg',
+            'laptop4.jpg',
+            'laptop5.jpg',
+            'laptop6.jpg',
+            'laptop7.jpg',
+            'laptop8.jpg',
+            'laptop9.jpg',
+            'laptop10.jpg',
+            'laptop11.jpg',
+            'laptop12.jpg',
+            'laptop13.jpg',
+            'laptop14.jpg',
+            'laptop15.jpg',
+            'laptop16.jpg',
         ];
         $mo_Ta  = [
             'Thiết kế HP 245 G10 đã có sự thay đổi đáng kể khi gọn gàng và vuông vắn hơn, mang đến vẻ đẹp nhẹ nhàng và thanh lịch. Máy vẫn giữ màu trắng bạc sang trọng cùng ngôn ngữ thiết kế đơn giản với logo HP nổi bật trên nắp lưng',
@@ -100,15 +100,12 @@ class DatabaseSeeder extends Seeder
         $card_screen = ['Intel UHD Graphics', 'AMD Radeon Graphics', 'NVIDIA GeForce RTX 3050 4GB; Intel Iris Xe Graphics', 'NVIDIA GeForce RTX 4050 6GB GDDR6; Intel Iris Xe Graphics'];
         $screen_size = ['32.4 x 21.5 x 1.79 cm', '359 x 256 x 22.8 ~ 24.3 mm', '358 x 236 x 18 mm', '32.49 x 21.39 x 1.79 ~ 1.79 cm', '324.3 x 213.8 x 17.9 mm'];
         $cannang_arr = ['1.0', '1.2', '1.4', '1.6', '1.8', '2.0', '2.3', '2.5'];
-        $OS = ['window', 'linux', 'MacOS ',''];
+        $OS = ['window', 'linux', 'MacOS'];
         for ($i = 1; $i <= 5000; $i++) {
             $gia = mt_rand(5000000, 30000000);
+            $mau_arr = ['Đen', 'Xám', 'Trắng','Bạc','Đỏ'];
             $gia_km = $gia - mt_rand(1000000, 5000000);
             $so_luong = mt_rand(0, 30); // 0 bình thường, 1 giá rẻ, 2 giảm sốc, 3 cao cấp
-            if ($gia >= 28000000) $tinhchat = 3;  //cao cấp
-            else if ($gia - $gia_km >= 3000000) $tinh_chat = 2; //giảm sốc
-            else if ($gia <= 6000000) $tinh_chat = 1; //giá rẻ
-            else $tinhchat = 0; //bình thường
             $randtime = mt_rand(2022, 2024) . '-' . mt_rand(1, 12) . '-' . mt_rand(1, 28) . " 23:59:59";
             $id_loai = mt_rand(1, count($loaiSP_arr)); ///  1- 12
             $ten_loai = $loaiSP_arr[$id_loai];
@@ -117,7 +114,7 @@ class DatabaseSeeder extends Seeder
                 'name' =>  $ten_sp,
                 'category_id' => $id_loai,
                 'image' => Arr::random($hinh_arr),
-                'description' => Arr::random($hinh_arr),
+                'description' => Arr::random($mo_Ta),
                 'price' => $gia,
                 'sale_price' => $gia_km,
                 'hot' => (Arr::random([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) % 3 == 0) ? 1 : 0,
@@ -126,14 +123,15 @@ class DatabaseSeeder extends Seeder
                 'view' => mt_rand(0, 1000),
                 'quantity_available' => $so_luong
             ]);
-            $slug = Str::slug($ten_sp) . "-" . $id;
-            DB::table('product')->where('id', $id)->update(['slug' => $slug]);
+            // $slug = Str::slug($ten_sp) . "-" . $id;
+            // DB::table('product')->where('id', $id)->update(['slug' => $slug]);
 
             DB::table('specifications')->insert([
                 'product_id' => $id,
                 'ram' => Arr::random($ram_arr),
                 'OS' => Arr::random($OS),
                 'hard_disk' => Arr::random($dia_arr),
+                'color' => Arr::random($mau_arr),
                 'screen_size' => Arr::random($screen_size),
                 'card_screen' => Arr::random($card_screen),
                 'capacity' => Arr::random($cannang_arr)

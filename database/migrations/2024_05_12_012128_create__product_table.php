@@ -14,17 +14,17 @@ return new class extends Migration
         Schema::create('Product', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->string('name', 200);
-            $table->string('description', 200);
-            $table->tinyInteger('is_stock')->default(1);
+            $table->longText('description');
+            $table->boolean('is_stock')->default(1);
             $table->integer('hot');
             $table->integer('price');
             $table->integer('sale_price')->nullable();
             $table->integer('quantity_available');
-            $table->integer('view');
-            $table->string('image', 200);
+            $table->integer('view')->nullable();
+            $table->string('image', 255);
             $table->integer('category_id');
             $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
-            $table->dateTime('time_up')->useCurrent();
+            $table->dateTime('time_up');
         });
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Order\orderDetail;
 use App\Models\Order\Orders;
+use App\Models\Order\Status;
 use App\Models\Product\Product;
 use App\Models\Product\Specifications;
 use App\Models\User\User;
@@ -192,50 +193,54 @@ class AdminController extends Controller
     {
         return view('admin.product.categoryAdd');
     }
-        public function postCategoryAdd(Request $request)
+    public function postCategoryAdd(Request $request)
     {
-        $valided =  $request->validate([
-            'name' => 'required|max:20',
-            'hidden' => 'required'
-        ],
-        [
-            'name.required' => 'Vui lòng nhập tên danh mục',
-            'name.max' => 'Tên danh mục tối đa 20 ký tự',
-            'hidden.required' => 'Vui lòng nhập ẩn hiện danh mục'
-        ]);
+        $valided =  $request->validate(
+            [
+                'name' => 'required|max:20',
+                'hidden' => 'required'
+            ],
+            [
+                'name.required' => 'Vui lòng nhập tên danh mục',
+                'name.max' => 'Tên danh mục tối đa 20 ký tự',
+                'hidden.required' => 'Vui lòng nhập ẩn hiện danh mục'
+            ]
+        );
 
         Category::create($valided);
         return redirect()->route('CategoryList')->with('success', 'Thêm danh mục thành công');
     }
 
     public function categoryEdit(string $id)
-    {   
+    {
         $category = Category::find($id);
         return view('admin.product.cateogryEdit', compact('category'));
     }
     public function postCategoryEdit(Request $request)
-    {   
-        $valided =  $request->validate([
-            'name' => 'required|max:20',
-            'hidden' => 'required'
-        ],
-        [
-            'name.required' => 'Vui lòng nhập tên danh mục',
-            'name.max' => 'Tên danh mục tối đa 20 ký tự',
-            'hidden.required' => 'Vui lòng nhập ẩn hiện danh mục'
-        ]);
+    {
+        $valided =  $request->validate(
+            [
+                'name' => 'required|max:20',
+                'hidden' => 'required'
+            ],
+            [
+                'name.required' => 'Vui lòng nhập tên danh mục',
+                'name.max' => 'Tên danh mục tối đa 20 ký tự',
+                'hidden.required' => 'Vui lòng nhập ẩn hiện danh mục'
+            ]
+        );
         $category = Category::find($request->id);
         $category->update($valided);
         return  redirect()->route('CategoryList', compact('category'))->with('success', 'Thay đổi danh mục thành công');
     }
 
-    
+
     public function deleteCategory(string $id)
     {
         Category::find($id)->delete();
         return redirect()->route('CategoryList')->with('success', 'Xóa danh mục thành công');
     }
-    
+
     public function userList()
     {
         $users = User::paginate(5);
@@ -249,7 +254,8 @@ class AdminController extends Controller
     public function ordersList()
     {
         $orders = Orders::paginate(5);
-        return view('admin.user.ordersList', compact('orders'));
+        $statuses = Status::all();
+        return view('admin.user.ordersList', compact('orders', 'statuses'));
     }
     public function deleteOrder(string $id)
     {
@@ -258,7 +264,18 @@ class AdminController extends Controller
     }
     public function orderEdit(string $id)
     {
-        Orders::find($id)->delete();
-        return redirect()->route('orderEdit');
+        $order = Orders::find($id);
+        $statuses = Status::all();
+        return view('admin.user.orderEdit', compact('order', 'statuses'));
+    }
+    public function postOrderEdit(Request $request, $id)
+    {
+        $order = Orders::find($id);
+        if ($order) {
+            $order->status_id = $request->input('status_id');
+            $order->save();
+            return redirect()->route('ordersList')->with('success', 'Cập nhật trạng thái thành công!');
+        }
+        return redirect()->route('ordersList')->with('error', 'Có lỗi xảy ra!');
     }
 }

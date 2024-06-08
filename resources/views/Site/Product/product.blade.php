@@ -64,7 +64,7 @@
                                         <li><a href="#"><i class="bi bi-star-fill"></i></a></li>
                                         <li><a href="#"><i class="bi bi-star-fill"></i></a></li>
                                         <li><a href="#"><i class="bi bi-star-fill"></i></a></li>
-                                        <li class="review"><a href="#"> {{count($customer)}} đánh giá</a></li>
+                                        <li class="review"><a href="#"> {{ count($customer) }} đánh giá</a></li>
                                     </ul>
                                 </div>
                                 <div class="product_price">
@@ -77,6 +77,19 @@
                                         </span>
                                     @endif
                                 </div>
+                                <div class="mb-3">
+                                    <span class="label-text">Màu sắc:</span>
+                                    <div class="color-options">
+                                        <input type="radio" name="color" id="color-red" value="red">
+                                        <label for="color-red" class="color-label" style="background-color: red;"></label>
+                                
+                                        <input type="radio" name="color" id="color-blue" value="blue">
+                                        <label for="color-blue" class="color-label" style="background-color: blue;"></label>
+                                
+                                        <input type="radio" name="color" id="color-green" value="green">
+                                        <label for="color-green" class="color-label" style="background-color: green;"></label>
+                                    </div>
+                                </div>                                
                                 <div class="product_variant color">
                                     <h3>Bảo hành 1 năm kể từ ngày mua</h3>
                                 </div>
@@ -132,7 +145,7 @@
                                 <div class="tab-pane fade" id="sheet" role="tabpanel">
                                     <div class="product_d_table">
                                         <form action="#">
-                                            <table>
+                                            <table class="table-striped">
                                                 <tbody>
                                                     @if (isset($specifications))
                                                         <tr>
@@ -148,8 +161,8 @@
                                                             <td>{{ $specifications->ram }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="first_child">Dung lượng</td>
-                                                            <td>{{ $specifications->Capacity }}</td>
+                                                            <td class="first_child">Trọng lượng</td>
+                                                            <td>{{ $specifications->capacity }}kg</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="first_child">Kích thước màn hình</td>
@@ -184,7 +197,7 @@
                                                     <label for="author">Tên</label><span class="text-danger">*</span>
                                                     <input name="name" id="author" type="text"
                                                         class="form-control @error('name') is-invalid @enderror"
-                                                        value="{{ old('name', auth()->user()->name) }}">
+                                                        value="{{ auth()->check() ? auth()->user()->name : old('name') }}">
                                                     @error('name')
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
@@ -198,7 +211,17 @@
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <button type="submit">Đăng</button>
+                                            @if (auth()->check())
+                                                <button type="submit">Đăng</button>
+                                            @else
+                                                <div class=""
+                                                    style="display: flex;gap:10px;align-items:center;margin-top:20px;">
+                                                    <button style="margin-top: 0;" class="disabled" type="button"
+                                                        disabled>Đăng</button>
+                                                    <span style="color: red">Vui lòng đăng nhập để đánh
+                                                        giá</span>
+                                                </div>
+                                            @endif
                                         </form>
                                     </div>
                                     <div class="my-4">
@@ -210,11 +233,13 @@
                                                         <div class="row">
                                                             <div class="col-4">
                                                                 <span class="text-uppercase"
-                                                                    style="font-weight: 600; font-size:15px;">{{$review->name}}</span>
-                                                                <p style="font-size:13px;">{{ \Carbon\Carbon::parse($review->date_created)->format('d/m/Y - H:i:s') }}</p>
+                                                                    style="font-weight: 600; font-size:15px;">{{ $review->name }}</span>
+                                                                <p style="font-size:13px;">
+                                                                    {{ \Carbon\Carbon::parse($review->date_created)->format('d/m/Y - H:i:s') }}
+                                                                </p>
                                                             </div>
                                                             <div class="col-8">
-                                                                <p>{{$review->content}}</p>
+                                                                <p>{{ $review->content }}</p>
                                                             </div>
                                                         </div>
                                                     </div>

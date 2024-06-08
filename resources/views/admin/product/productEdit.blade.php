@@ -118,7 +118,7 @@
                                                                 class="bi bi-bookmark"></i></span>
                                                         <input name="sale_price" type="text"
                                                             class="form-control @error('sale_price') is-invalid @enderror"
-                                                            placeholder="Giá giảm" value="{{ $category->sale_price }}">
+                                                            placeholder="Giá giảm" value="{{ $product->sale_price }}">
                                                     </div>
                                                     @error('sale_price')
                                                         <div class="invalid-feedback" style="color: red;margin-bottom:10px;">

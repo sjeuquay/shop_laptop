@@ -169,9 +169,9 @@
                                  <span class="name-user">{{auth()->user()->name}}<i class="bi bi-chevron-down mx-1" style="font-size:10px;"></i></span>
                                  <ul class="dropdown-menu">
                                      <li><a style="background-color: transparent" class="dropdown-item"
-                                             href="#">Thông tin tài khoản</a></li>
+                                             href="{{route('profile')}}">Thông tin tài khoản</a></li>
                                      <li><a style="background-color: transparent" class="dropdown-item"
-                                             href="#">Lịch sử mua hàng</a></li>
+                                             href="{{route('orderHistory')}}">Lịch sử mua hàng</a></li>
                                      <li><a style="background-color: transparent" class="dropdown-item"
                                              href="{{ route('logout') }}">Đăng xuất</a></li>
                                  </ul>

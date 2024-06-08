@@ -4942,3 +4942,84 @@ th.fc-day-header.fc-widget-header {
 #file-input-sub-1 {
     display: none;
 }
+
+/* admin */
+.status-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.status-button {
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+}
+
+.status-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    z-index: 1000;
+}
+
+.status-option {
+    padding: 10px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.status-option:hover {
+    background-color: #f0f0f0;
+}
+
+.status-dropdown .status-options.d-none {
+    display: none;
+}
+
+.status-dropdown .status-options.d-block {
+    display: flex;
+}
+
+/* Các lớp trạng thái với màu sắc tương ứng */
+.status-1 {
+    background-color: #6c757d; /* Chờ xử lý (xám) */
+}
+
+.status-2 {
+    background-color: #ffc107; /* Chuẩn bị hàng (vàng) */
+}
+
+.status-3 {
+    background-color: #28a745; /* Đang giao hàng (xanh lá cây) */
+}
+
+.status-4 {
+    background-color: #007bff; /* Đã giao (xanh dương) */
+}
+
+.status-5 {
+    background-color: #dc3545; /* Đã hủy (đỏ) */
+}
+
+/* Đảm bảo text bên trong các nút có màu trắng */
+.status-1, .status-2, .status-3, .status-4, .status-5 {
+    color: white;
+}
+
+.group-admin-input>input {
+    width: 100%;
+}
+.group-admin-input>span {
+    width: 175px;
+}

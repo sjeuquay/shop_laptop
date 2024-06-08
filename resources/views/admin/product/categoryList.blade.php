@@ -60,27 +60,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            @if (!empty($categorys))
-
-                                <nav aria-label="Page navigation example"
-                                    style="width:100%;display:flex;justify-content:center;">
-                                    <ul class="pagination pagi-list">
-                                        <li class="page-item"><a class="page-link"
-                                                href="{{ $categorys->previousPageUrl() }}"><i
-                                                    class="bi bi-chevron-left"></i></a></li>
-                                        @for ($i = 1; $i <= $categorys->lastPage(); $i++)
-                                            <li class="page-item {{ $categorys->currentPage() == $i ? 'active' : '' }}">
-                                                <a class="page-link"
-                                                    href="{{ $categorys->url($i) }}">{{ $i }}</a>
-                                            </li>
-                                        @endfor
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $categorys->nextPageUrl() }}"><i
-                                                    class="bi bi-chevron-right"></i></i></a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            @endif
+                            {!! $categorys->appends(request()->query())->links() !!}
                         </div>
                     </div>
                 </div>

@@ -81,24 +81,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            @if (!empty($products))
-                                <nav aria-label="Page navigation example"
-                                    style="width:100%;display:flex;justify-content:center;">
-                                    <ul class="pagination pagi-list">
-                                        <li class="page-item"><a class="page-link"
-                                                href="{{ $products->previousPageUrl() }}">Previous</a></li>
-                                        @for ($i = 1; $i <= $products->lastPage(); $i++)
-                                            <li class="page-item {{ $products->currentPage() == $i ? 'active' : '' }}">
-                                                <a class="page-link"
-                                                    href="{{ $products->url($i) }}">{{ $i }}</a>
-                                            </li>
-                                        @endfor
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $products->nextPageUrl() }}">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            @endif
+                            {!! $products->appends(request()->query())->links() !!}
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('hard_disk', 150);
             $table->string('ram', 100);
             $table->string('capacity', 100);
+            $table->string('color', 100);
             $table->string('screen_size', 255);
             $table->string('card_screen', 255);
         });

@@ -12982,3 +12982,72 @@ a {
   background-color: #000 !important;
   color: #fff !important;
 }
+
+/* input color */
+.mb-3 {
+  display: flex;
+  align-items: center;
+}
+
+.label-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.color-options {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa các ô */
+  margin-left: 10px; /* Khoảng cách giữa chữ "Màu sắc:" và các ô */
+}
+
+.color-options input[type="radio"] {
+  display: none;
+}
+
+.color-options label.color-label {
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.color-options input[type="radio"]:checked + label.color-label {
+  border-color: black;
+  transform: scale(1.2);
+}
+.mb-3 {
+  display: flex;
+  align-items: center;
+}
+
+.label-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.color-options {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa các ô */
+  margin-left: 10px; /* Khoảng cách giữa chữ "Màu sắc:" và các ô */
+}
+.color-options input[type="radio"] {
+  display: none;
+}
+.color-options label.color-label {
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+.color-options input[type="radio"]:checked + label.color-label {
+  border-color: black;
+}
+
+.color-options label{
+  margin-bottom: 0 !important;
+}
+

@@ -38,6 +38,12 @@ Route::post('/register', [UserController::class, 'Postregister'])->name('Postreg
 
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+Route::get('/change_password', [UserController::class, 'changePassword'])->name('changePassword');
+Route::get('/order_history', [UserController::class, 'orderHistory'])->name('orderHistory');
+Route::get('/order_detail/{id?}', [UserController::class, 'ordeDetail'])->name('ordeDetail');
+Route::post('/destroy/{id?}', [UserController::class, 'destroy'])->name('destroy');
+
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'postCheckout'])->name('postCheckout');
 
@@ -46,7 +52,7 @@ Route::get('/orderconfirmation/{id?}', [CheckoutController::class, 'OrderConfirm
 Route::post('/product/{id?}', [ProductController::class, 'customer'])->name('customer');
 
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/', [AdminController::class, 'admin'])->name('adminDashboard');
     Route::fallback(function () {
         return redirect()->route('adminDashboard');
@@ -74,4 +80,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/order-list', [AdminController::class, 'ordersList'])->name('ordersList');
     Route::post('/order-list/{id?}', [AdminController::class, 'deleteOrder'])->name('deleteOrder');
     Route::get('/order-edit/{id?}', [AdminController::class, 'orderEdit'])->name('orderEdit');
+    Route::post('/order-edit', [AdminController::class, 'postOrderEdit'])->name('postOrderEdit');
+    Route::post('/order/edit/{id}', [AdminController::class, 'postOrderEdit'])->name('postOrderEdit');
 });

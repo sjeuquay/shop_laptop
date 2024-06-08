@@ -47,8 +47,12 @@ class CartController extends Controller
             }
             if ($cartItem) {
                 $cartItem->quantity += 1;
+                if ($cartItem->quantity > $product->quantity_available) {
+                    return redirect()->back()->with('error', 'Sản phẩm đã hết hàng.');
+                }
                 $cartItem->total_price = $cartItem->quantity * $priceProduct;
                 $cartItem->save();
+
             } else {
                 CartItem::create([
                     'cart_id' => $cart->id,

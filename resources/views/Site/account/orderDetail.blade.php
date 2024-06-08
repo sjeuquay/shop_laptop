@@ -1,14 +1,9 @@
 @extends('Site.layout')
 
-@section('title', 'orderConfirmation')
+@section('title', 'Chi tiết đơn hàng')
 @section('content')
 
-    <div class="container p-5">
-        @if (session('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
+    <div class="container py-5">
         <div id="ui-view" data-select2-id="ui-view">
             <div>
                 <div class="card">
@@ -30,6 +25,16 @@
                         <div class="row mb-4">
                             <div class="col-sm-4">
                                 <h6 class="mb-3 text-uppercase">Người đặt:</h6>
+                                <div>{{ $order->user->name }}</div>
+                                <div>{{ $order->ship_address1 }}</div>
+                                @if (($order->ship_address2))
+                                    <div>{{ $order->ship_address2 }}</div>
+                                @endif
+                                <div>{{ $order->email }}</div>
+                                <div>{{ $order->phone }}</div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h6 class="mb-3 text-uppercase">Người nhận:</h6>
                                 <div>{{ $order->user->name }}</div>
                                 <div>{{ $order->ship_address1 }}</div>
                                 @if ($order->ship_address2)
@@ -102,11 +107,8 @@
                                 </table>
                                 <div class="d-flex justify-content-between">
                                     <a class="btn btn-success text-white w-100 mx-1 text-center px-0"
-                                        href="{{ route('shop') }} " data-abc="true">
-                                        <i class="bi bi-bag-plus mx-1"></i>Mua sắm</a>
-                                    <a class="btn btn-success text-white w-100 mx-1 text-center px-0"
-                                        href="{{ route('home') }} " data-abc="true">
-                                        <i class="bi bi-check-circle mx-1"></i> Xác nhận</a>
+                                        href="{{ route('orderHistory') }} " data-abc="true">
+                                        <i class="bi bi-box-arrow-left mx-2"></i>Quay lại</a>
                                 </div>
                             </div>
                         </div>

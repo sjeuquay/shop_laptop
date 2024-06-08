@@ -7,6 +7,7 @@ use App\Models\Cart_Checkout\Cart;
 use App\Models\Cart_Checkout\CartItem;
 use App\Models\Order\orderDetail;
 use App\Models\Order\Orders;
+use App\Models\Product\Product;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -97,9 +98,14 @@ class CheckoutController extends Controller
                         'unit_price' => $cartitem-> price,
                         'sub_price' => $cartitem->total_price
                     ]);
+                    $product = Product::find($cartitem->product_id);
+                    $product->quantity_available -= $cartitem->quantity;
+                    if ($product->quantity_available == 0) {
+                        $product->is_stock = 0;
+                    }
+                    $product->save();
                 }
             }
-
             $cart =  Cart::where('user_id', $user->id)->first();
             CartItem::where('cart_id', $cart->id)->delete();
     
